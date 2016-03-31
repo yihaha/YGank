@@ -86,16 +86,16 @@ public class MainActivity extends BaseActivity {
 //                int itemId = item.getItemId();
                 switch (item.getItemId()) {
                     case R.id.nav_home:
-                        Toast.makeText(MainActivity.this, "home", 0).show();
+                        Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_category:
-                        Toast.makeText(MainActivity.this, "分类", 0).show();
+                        Toast.makeText(MainActivity.this, "分类", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_setting:
-                        Toast.makeText(MainActivity.this, "设置", 0).show();
+                        Toast.makeText(MainActivity.this, "设置", Toast.LENGTH_SHORT).show();
                         break;
                     case R.id.nav_about:
-                        Toast.makeText(MainActivity.this, "关于", 0).show();
+                        Toast.makeText(MainActivity.this, "关于", Toast.LENGTH_SHORT).show();
                         break;
 
                 }
