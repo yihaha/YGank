@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_margin="8dp">
+
+    <ImageView
+        android:id="@+id/meizi_img"
+        android:layout_width="match_parent"
+        android:layout_height="200dp"
+        android:src="@mipmap/defaultmeizi" />
+
+    <TextView
+        android:id="@+id/meizi_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/meizi_img"
+        android:background="@color/text_bg_gray"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:padding="@dimen/recycle_item_bottom"
+        android:text="测试"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_main_size" />
+
+    <TextView
+        android:id="@+id/time_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:layout_margin="@dimen/recycle_item_bottom"
+        android:padding="@dimen/recycle_item_bottom"
+        android:shadowColor="@color/gray"
+        android:shadowDx="-1"
+        android:shadowDy="-1"
+        android:shadowRadius="3"
+        android:text="2016-04-14"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/text_main_size" />
+
+    <View
+        android:id="@+id/null_view"
+        android:layout_width="match_parent"
+        android:layout_height="60dp"
+        android:layout_alignBottom="@id/meizi_img" />
+
+</RelativeLayout>
