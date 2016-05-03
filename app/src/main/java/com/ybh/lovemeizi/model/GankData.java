@@ -1,8 +1,5 @@
 package com.ybh.lovemeizi.model;
 
-import com.google.gson.annotations.SerializedName;
-import com.google.gson.internal.Streams;
-
 import java.util.Date;
 
 /**

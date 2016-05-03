@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#99232323">
+
+    <LinearLayout
+        android:layout_width="280dp"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bmob_update_dialog_bg"
+        android:orientation="vertical"
+        android:paddingBottom="8dp"
+        android:paddingLeft="20dp"
+        android:paddingRight="20dp"
+        android:paddingTop="20dp">
+
+        <!-- Title -->
+
+        <RelativeLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content">
+
+            <!--<ImageView-->
+            <!--android:id="@+id/bmob_update_wifi_indicator"-->
+            <!--android:layout_width="30dp"-->
+            <!--android:layout_height="30dp"-->
+            <!--android:layout_centerVertical="true"-->
+            <!--android:layout_marginLeft="24dp"-->
+            <!--android:contentDescription="@string/BMGprsCondition"-->
+            <!--android:src="@android:color/transparent"-->
+            <!--android:visibility="gone" />-->
+            <ImageView
+                android:id="@+id/bmob_update_wifi_indicator"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="10dp"
+                android:contentDescription="@string/BMGprsCondition"
+                android:src="@drawable/bmob_update_wifi_disable" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/bmob_update_wifi_indicator"
+                android:text="@string/BMUpdateTitle"
+                android:textColor="#63C2FF"
+                android:textSize="22sp" />
+
+            <Button
+                android:id="@+id/bmob_update_id_close"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentRight="true"
+                android:layout_centerVertical="true"
+                android:layout_marginRight="10dp"
+                android:background="@drawable/bmob_update_button_close_bg_selector"
+                android:focusable="true"
+                android:visibility="gone" />
+
+        </RelativeLayout>
+
+        <ScrollView
+            android:layout_width="fill_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:padding="8dp">
+
+            <LinearLayout
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/bmob_update_content"
+                    android:layout_width="fill_parent"
+                    android:layout_height="wrap_content"
+                    android:focusable="true"
+                    android:textColor="#8a000000"
+                    android:textSize="14sp" />
+            </LinearLayout>
+        </ScrollView>
+
+        <!-- Ignore CheckBox -->
+
+        <CheckBox
+            android:id="@+id/bmob_update_id_check"
+            android:layout_width="fill_parent"
+            android:layout_height="32dp"
+            android:button="@drawable/bmob_update_button_check_selector"
+            android:text="@string/BMIgnore"
+            android:textColor="#AAABAF"
+            android:visibility="gone" />
+
+        <!-- OK&Cancel Button -->
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="6dp">
+
+            <TextView
+                android:id="@+id/empty_view"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/bmob_update_id_cancel"
+                style="@style/MaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_marginRight="24dp"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:focusable="true"
+                android:text="@string/BMNotNow"
+                android:textColor="#AAABAF" />
+
+            <Button
+                android:id="@+id/bmob_update_id_ok"
+                style="@style/MaterialButton"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/material_button_height"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:focusable="true"
+                android:text="@string/BMUpdateNow"
+                android:textColor="#63C2FF" />
+
+            <Button
+                android:id="@+id/bmob_update_id_ignore"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@android:color/transparent"
+                android:focusable="true"
+                android:gravity="center"
+                android:text="@string/BMIgnore"
+                android:textColor="#AAABAF"
+                android:visibility="gone" />
+        </LinearLayout>
+    </LinearLayout>
+
+</RelativeLayout>
+

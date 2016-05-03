@@ -3,16 +3,15 @@ package com.ybh.lovemeizi.view.activity;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 
-import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.http.GankRetrofit;
-import com.ybh.lovemeizi.http.GankRetrofitService;
-import com.ybh.lovemeizi.http.GankServiceFactory;
 
 import butterknife.ButterKnife;
+import rx.Subscription;
+import rx.subscriptions.CompositeSubscription;
 
 public abstract class BaseActivity extends AppCompatActivity {
 
-    protected final static GankRetrofitService mGankService= GankServiceFactory.getSingleService();
+    private CompositeSubscription compositeSubscription;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -26,6 +25,7 @@ public abstract class BaseActivity extends AppCompatActivity {
 
 
     public abstract void initView();
+
     public abstract void initData();
 
     public int getContentViewId() {
@@ -34,9 +34,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     @Override
     protected void onDestroy() {
-        if (0!=getContentViewId()){
+        super.onDestroy();
+        if (0 != getContentViewId()) {
             ButterKnife.unbind(this);
         }
-        super.onDestroy();
+        if (null != compositeSubscription) {
+            compositeSubscription.unsubscribe();
+        }
     }
+
+    public void addaddSubscription(Subscription subscribe) {
+        if (null == compositeSubscription) {
+            compositeSubscription = new CompositeSubscription();
+        }
+        compositeSubscription.add(subscribe);
+    }
+
 }

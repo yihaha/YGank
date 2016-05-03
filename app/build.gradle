@@ -6,15 +6,25 @@ android {
 
     defaultConfig {
         applicationId "com.ybh.lovemeizi"
-        minSdkVersion 14
+        minSdkVersion 19
         targetSdkVersion 23
-        versionCode 1
-        versionName "1.0"
+        versionCode 3
+        versionName "2.1"
     }
+
+
+
+
     buildTypes {
+
+        debug {
+            buildConfigField "boolean", "LOG_DEBUG", "true"
+        }
+
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            buildConfigField "boolean", "LOG_DEBUG", "false"
         }
     }
 }
@@ -38,5 +48,18 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.squareup.retrofit2:converter-gson:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
-    compile 'com.commit451:PhotoView:1.2.5'
+//    compile 'com.commit451:PhotoView:1.2.5'
+    compile 'com.github.chrisbanes:PhotoView:1.2.6'
+//    compile "com.github.chrisbanes.photoview:library:1.2.6"
+    compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
+    compile files('libs/BmobSDK_V3.4.6_0415.jar')
+    compile files('libs/MobCommons-2016.0406.1915.jar')
+    compile files('libs/MobTools-2016.0406.1915.jar')
+    compile files('libs/ShareSDK-Core-2.7.1.jar')
+    compile files('libs/ShareSDK-QQ-2.7.1.jar')
+    compile files('libs/ShareSDK-QZone-2.7.1.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.1.jar')
 }

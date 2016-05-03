@@ -1,33 +1,42 @@
 package com.ybh.lovemeizi.view.activity;
 
-import android.content.Intent;
+import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.Toolbar;
-import android.view.View;
 import android.view.Menu;
+import android.view.View;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.Toast;
 
 
+import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.GankRetrofitService;
 import com.ybh.lovemeizi.http.GankServiceFactory;
 import com.ybh.lovemeizi.model.AllData;
 import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.view.adapter.MainRecyclAdapter;
+import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.Bind;
+import cn.bmob.v3.Bmob;
+import cn.bmob.v3.update.BmobUpdateAgent;
 import rx.Observable;
 import rx.Observer;
+import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
 import rx.functions.Func2;
@@ -60,8 +69,15 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.main_navigationview)
     NavigationView mNavigationView;
-    private MainRecyclAdapter mainRecyclAdapter;
 
+    @Bind(R.id.relayout)
+    YRefreshLayout mRefreshLayout;
+
+    private MainRecyclAdapter mainRecyclAdapter;
+    private final static int AVGCOUNT = 10; //每页数据
+    private int page = 1;
+
+    private List<GankData> meiziList = new ArrayList<>();
     private GankRetrofitService gService = GankServiceFactory.getSingleService();
 
     @Override
@@ -72,6 +88,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
@@ -91,6 +110,19 @@ public class MainActivity extends BaseActivity {
             }
         });
 
+        mRefreshLayout.setOnRefreshListener(new YRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefreshing() {
+                page = 1;
+                loadData(page);
+            }
+
+            @Override
+            public void onLoading() {
+                page++;
+                loadData(page);
+            }
+        });
 
         mainRecyclAdapter = new MainRecyclAdapter(MainActivity.this);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
@@ -98,7 +130,20 @@ public class MainActivity extends BaseActivity {
         mRecycleView.setHasFixedSize(true);//item固定高度可以提高性能
         mRecycleView.setAdapter(mainRecyclAdapter);
 
+        // 初始化BmobSDK
+        Bmob.initialize(this, Contant.BOMB_APPID);
+
+        //初始化建表操作,执行一次后,就应该注释掉
+//        BmobUpdateAgent.initAppVersion(this);
+
+        //取消只有在wifi情况下才更新
+        BmobUpdateAgent.setUpdateOnlyWifi(false);
+        //默认在wifi下才更新
+        BmobUpdateAgent.update(this);
+
     }
+
+
 
     /**
      * 侧边栏选项
@@ -137,18 +182,18 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        loadData();
+//        loadData();
     }
 
     /**
      * 请求数据
      */
-    private void loadData() {
-        Observable.zip(gService.getMeiziList(10, 1), gService.getVideoList(10, 1)
+    private void loadData(final int page) {
+        Subscription subscribe = Observable.zip(gService.getMeiziList(AVGCOUNT, page), gService.getVideoList(AVGCOUNT, page)
                 , new Func2<AllData, AllData, AllData>() {
                     @Override
                     public AllData call(AllData picAll, AllData videoAll) {
-                        return onMerageDesc(picAll,videoAll);
+                        return onMerageDesc(picAll, videoAll);
                     }
                 })
                 .map(new Func1<AllData, List<GankData>>() {
@@ -167,31 +212,81 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-
+//                        mRefreshLayout.finishRefreshing();
+                        finishReorLoad();
                     }
 
                     @Override
                     public void onNext(List<GankData> gankDatas) {
-                        mainRecyclAdapter.setRefresh(gankDatas);
+                        if (page == 1 && meiziList.size() > 0) { //刷新的时候要将旧数据清空
+                            meiziList.clear();
+                        }
+                        finishReorLoad();
+                        meiziList.addAll(gankDatas);
+                        mainRecyclAdapter.setRefresh(meiziList);
+//                        mRefreshLayout.finishRefreshing();
                     }
                 });
+        addaddSubscription(subscribe);
 
     }
 
     /**
+     * 为了保持刷新效果小于1秒时,也有1秒的效果
+     */
+    private void finishReorLoad() {
+        mRefreshLayout.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                mRefreshLayout.finishRefreshing();
+            }
+        }, 1000);
+    }
+
+    /**
      * 将视频内容的说明设置到图片说明
+     *
      * @param picAll
      * @param videoAll
      * @return
      */
-    private AllData onMerageDesc(AllData picAll,AllData videoAll){
+    private AllData onMerageDesc(AllData picAll, AllData videoAll) {
         int maxLength = picAll.results.size() > videoAll.results.size() ? picAll.results.size() : videoAll.results.size();
-        for (int i=0;i<maxLength;i++){
+        for (int i = 0; i < maxLength; i++) {
             GankData gankData = picAll.results.get(i);
-            gankData.desc=videoAll.results.get(i).desc;
+            gankData.desc = videoAll.results.get(i).desc;
         }
         return picAll;
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int itemId = item.getItemId();
+        switch (itemId) {
+
+            case R.id.action_day_night_mode:
+                PreferenceUtil preferenceUtil = new PreferenceUtil(MainActivity.this);
+                boolean isNightMode = preferenceUtil.getBoolean(Contant.DAY_NIGHT_MODE);
+                if (isNightMode) {
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                } else {
+                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+                }
+//                KLog.w("夜间模式",isNight);
+                isNightMode = !isNightMode;
+                preferenceUtil.saveBoolean(Contant.DAY_NIGHT_MODE, isNightMode);
+                recreate();
+                return true;
+            default:
+                break;
+        }
+
+        return super.onOptionsItemSelected(item);
+    }
 }

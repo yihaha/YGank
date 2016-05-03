@@ -92,10 +92,12 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
         public void setView(GankData gankData) {
             url = gankData.url;
             meizi_title.setText(gankData.desc);
-            createTime.setText(DateUtil.onDate2String(gankData.createdAt));
+//            createTime.setText(DateUtil.onDate2String(gankData.createdAt));//这个创建时间可能不准
+            createTime.setText(DateUtil.onDate2String(gankData.publishedAt));
             Glide.with(mContext)
                     .load(gankData.url)
                     .centerCrop()
+                    .placeholder(R.mipmap.defaultmeizi)
                     .dontAnimate()
                     .into(meizi_img);
         }
