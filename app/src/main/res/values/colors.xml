@@ -11,4 +11,6 @@
     <color name="primary_dark">#262626</color>
     <color name="md_black_1000">#000000</color>
     <color name="text_main">#666666</color>
+    <color name="video_bg">#4D7284</color>
+    <color name="gray_text">#bdbdbd</color>
 </resources>

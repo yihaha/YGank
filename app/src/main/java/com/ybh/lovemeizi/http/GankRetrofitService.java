@@ -17,8 +17,8 @@ public interface GankRetrofitService {
         @GET("day/{year}/{month}/{day}")
         Observable<TodayDataBean> getTodayData(@Path("year") int year,@Path("month") int month,@Path("day") int day );
 
-        @GET("day/{year}/{month}/{day}")
-        Call<TodayDataBean> getDayData(@Path("year") int year,@Path("month") int month,@Path("day") int day );
+//        @GET("day/{year}/{month}/{day}")
+//        Call<TodayDataBean> getDayData(@Path("year") int year,@Path("month") int month,@Path("day") int day );
 
         //图片列表
         @GET("data/福利/{pageCount}/{currPage}")

@@ -43,4 +43,15 @@
 
     </style>
 
+    <style name="YTextStyle">
+        <item name="android:textSize">12sp</item>
+        <!--斜体-->
+        <item name="android:textStyle">italic</item>
+        <item name="android:textColor">@color/gray_text</item>
+    </style>
+
+    <style name="CollapsingToolbarTitleStyle" parent="@android:style/TextAppearance">
+        <item name="android:textColor">@android:color/transparent</item>
+    </style>
+
 </resources>

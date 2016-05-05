@@ -1,4 +1,4 @@
-package com.ybh.lovemeizi.view.activity;
+package com.ybh.lovemeizi.module.home.ui;
 
 
 import android.support.v7.app.AppCompatDelegate;
@@ -9,6 +9,7 @@ import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.utils.SlidrUtil;
+import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.widget.YBottomSheetDialogView;
 import com.ybh.lovemeizi.widget.slidr.model.SlidrInterface;
 

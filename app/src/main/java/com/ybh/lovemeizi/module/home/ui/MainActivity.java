@@ -1,5 +1,6 @@
-package com.ybh.lovemeizi.view.activity;
+package com.ybh.lovemeizi.module.home.ui;
 
+import android.content.Intent;
 import android.os.Build;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
@@ -18,6 +19,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 
+import com.socks.library.KLog;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.GankRetrofitService;
@@ -25,7 +27,8 @@ import com.ybh.lovemeizi.http.GankServiceFactory;
 import com.ybh.lovemeizi.model.AllData;
 import com.ybh.lovemeizi.model.GankData;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
-import com.ybh.lovemeizi.view.adapter.MainRecyclAdapter;
+import com.ybh.lovemeizi.module.BaseActivity;
+import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
 import java.util.ArrayList;
@@ -88,9 +91,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+//        }
 
         setSupportActionBar(toolbar);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
@@ -213,6 +216,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
 //                        mRefreshLayout.finishRefreshing();
+                        KLog.w("onError",e+"");
                         finishReorLoad();
                     }
 
@@ -227,7 +231,7 @@ public class MainActivity extends BaseActivity {
 //                        mRefreshLayout.finishRefreshing();
                     }
                 });
-        addaddSubscription(subscribe);
+        addSubscription(subscribe);
 
     }
 

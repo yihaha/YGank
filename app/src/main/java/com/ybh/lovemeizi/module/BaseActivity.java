@@ -1,7 +1,9 @@
-package com.ybh.lovemeizi.view.activity;
+package com.ybh.lovemeizi.module;
 
+import android.os.Build;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.WindowManager;
 
 
 import butterknife.ButterKnife;
@@ -18,6 +20,9 @@ public abstract class BaseActivity extends AppCompatActivity {
         if (getContentViewId() != 0) {
             setContentView(getContentViewId());
             ButterKnife.bind(this);
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
         }
         initView();
         initData();
@@ -43,7 +48,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         }
     }
 
-    public void addaddSubscription(Subscription subscribe) {
+    public void addSubscription(Subscription subscribe) {
         if (null == compositeSubscription) {
             compositeSubscription = new CompositeSubscription();
         }

@@ -1,8 +1,10 @@
-package com.ybh.lovemeizi.view.adapter;
+package com.ybh.lovemeizi.module.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.os.Bundle;
 import android.support.v7.widget.RecyclerView;
+import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,13 +13,19 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
+import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.module.home.ui.DetailActivity;
 import com.ybh.lovemeizi.utils.DateUtil;
-import com.ybh.lovemeizi.view.activity.MainActivity;
-import com.ybh.lovemeizi.view.activity.ShowPicActivity;
+import com.ybh.lovemeizi.module.home.ui.MainActivity;
+import com.ybh.lovemeizi.module.home.ui.ShowPicActivity;
 
+import java.util.Date;
 import java.util.List;
+
+import butterknife.Bind;
+import butterknife.ButterKnife;
 
 
 /**
@@ -48,7 +56,19 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
 
     @Override
     public void onBindViewHolder(MeiziListViewHolder holder, int position) {
-        holder.setView(mList.get(position));
+        final GankData gankData = mList.get(position);
+        final Date publishedAt = gankData.publishedAt;
+        holder.setView(gankData);
+        holder.descView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(mActivity, DetailActivity.class);
+                intent.putExtra(Contant.Y_DATE,publishedAt.getTime()+"");
+                mContext.startActivity(intent);
+                mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
+                Toast.makeText(mActivity,"将打开视频",Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     @Override
@@ -57,26 +77,19 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
     }
 
     class MeiziListViewHolder extends RecyclerView.ViewHolder {
+        @Bind(R.id.meizi_img)
         ImageView meizi_img;
+        @Bind(R.id.meizi_title)
         TextView meizi_title;
+        @Bind(R.id.time_id)
         TextView createTime;
+        @Bind(R.id.null_view)
+        View descView;
         private String url;
 
         public MeiziListViewHolder(View itemView) {
             super(itemView);
-            meizi_img = (ImageView) itemView.findViewById(R.id.meizi_img);
-            meizi_title = (TextView) itemView.findViewById(R.id.meizi_title);
-            createTime = (TextView) itemView.findViewById(R.id.time_id);
-            itemView.findViewById(R.id.null_view).setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-//                    Intent intent = new Intent(mActivity, ShowPicActivity.class);
-//                    intent.putExtra("imgUrl", url);
-//                    mContext.startActivity(intent);
-//                    mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                    Toast.makeText(mActivity,"将打开视频",Toast.LENGTH_SHORT).show();
-                }
-            });
+            ButterKnife.bind(this,itemView);
 
             meizi_img.setOnClickListener(new View.OnClickListener() {
                 @Override
