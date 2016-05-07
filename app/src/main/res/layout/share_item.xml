@@ -19,6 +19,6 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="5dp"
         android:text="微信"
-        android:textColor="@color/text_main" />
+        android:textColor="@color/text_666" />
 
 </RelativeLayout>

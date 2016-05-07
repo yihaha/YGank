@@ -1,15 +1,19 @@
 package com.ybh.lovemeizi.module.home.adapter;
 
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.a.a.V;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.module.home.ui.WebActivity;
 import com.ybh.lovemeizi.utils.StringUtil;
 
 import java.util.List;
@@ -50,7 +54,7 @@ public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHol
             }
         }
 
-        //作者字体加入了样式
+        //'作者'字体加入了样式
         SpannableStringBuilder spanBuilder = new SpannableStringBuilder(gankData.desc)
                 .append(StringUtil.setStringStyle(holder.cateGory_title.getContext()
                         ," (via. "+gankData.who+") ",R.style.YTextStyle));
@@ -59,12 +63,6 @@ public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHol
         CharSequence desc = spanBuilder.subSequence(0, spanBuilder.length());
         holder.detail_desc.setText(desc);
         showItemAnim(holder.detail_desc,position);//执行动画
-        holder.detail_desc.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Toast.makeText(holder.detail_desc.getContext(),gankData.desc,0).show();
-            }
-        });
 
     }
 
@@ -78,10 +76,21 @@ public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHol
         TextView cateGory_title;
         @Bind(R.id.detail_desc)
         TextView detail_desc;
+//        @Bind(R.id.detail_ll)
+//        LinearLayout descParentView;
 
         public ViewHolder(View itemView) {
             super(itemView);
             ButterKnife.bind(this, itemView);
+        }
+
+        @OnClick(R.id.detail_ll)
+        void goWeb(View view){
+            GankData gankData = mDatas.get(getLayoutPosition());
+            Intent intent = new Intent(view.getContext(), WebActivity.class);
+            intent.putExtra("url", gankData.url);
+            intent.putExtra("desc",gankData.desc);
+            view.getContext().startActivity(intent);
         }
 
     }

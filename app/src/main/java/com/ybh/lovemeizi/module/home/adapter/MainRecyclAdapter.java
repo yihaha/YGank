@@ -3,6 +3,8 @@ package com.ybh.lovemeizi.module.home.adapter;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
 import android.text.format.DateUtils;
 import android.view.LayoutInflater;
@@ -66,7 +68,6 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
                 intent.putExtra(Contant.Y_DATE,publishedAt.getTime()+"");
                 mContext.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
-                Toast.makeText(mActivity,"将打开视频",Toast.LENGTH_SHORT).show();
             }
         });
     }
@@ -94,9 +95,17 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
             meizi_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
+                    GankData gankData = mList.get(getLayoutPosition());
                     Intent intent = new Intent(mActivity, ShowPicActivity.class);
-                    intent.putExtra("imgUrl", url);
+                    intent.putExtra("imgUrl", gankData.url);
+                    intent.putExtra("date",DateUtil.onDate2String(gankData.publishedAt,"yyyy/MM/dd"));
                     mContext.startActivity(intent);
+
+//                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
+//                                                             .makeSceneTransitionAnimation(mActivity
+//                                                            , meizi_img, ShowPicActivity.MEIZI_IMG);
+//
+//                    ActivityCompat.startActivity(mActivity,intent,activityOptionsCompat.toBundle());
                     mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
                 }
             });

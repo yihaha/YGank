@@ -29,7 +29,7 @@ public class YBottomSheetDialogView {
 
     public YBottomSheetDialogView(Context context, int dayNightMode) {
         bottomDialog = new BottomSheetDialog(context);
-        bottomDialog.getDelegate().setLocalNightMode(dayNightMode);
+//        bottomDialog.getDelegate().setLocalNightMode(dayNightMode);
         View view = LayoutInflater.from(context).inflate(R.layout.sharelayout, null);
 
         //取消弹出

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/ydialog_bg"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/ydialog_title"
+        android:layout_width="match_parent"
+        android:layout_height="48dp"
+        android:background="@drawable/ydialog_title_bg"
+        android:gravity="center"
+        android:text="测试"
+        android:textColor="@color/text_666" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray_text" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="48dp">
+
+        <TextView
+            android:id="@+id/ydialog_cancel"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ydialog_cancel_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="取消"
+            android:textColor="@color/text_666" />
+
+        <View
+            android:layout_width="0.5dp"
+            android:layout_height="match_parent"
+            android:background="@color/gray_text" />
+
+        <TextView
+            android:id="@+id/ydialog_ok"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:background="@drawable/ydialog_ok_bg"
+            android:clickable="true"
+            android:gravity="center"
+            android:text="确定"
+            android:textColor="@color/text_666" />
+
+    </LinearLayout>
+</LinearLayout>

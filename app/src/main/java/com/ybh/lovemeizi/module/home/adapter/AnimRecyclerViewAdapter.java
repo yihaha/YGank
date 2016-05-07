@@ -15,7 +15,7 @@ import com.ybh.lovemeizi.R;
 public class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
         extends RecyclerView.Adapter<T> {
 
-    private static final int DELAY = 100;
+    private static final int DELAY = 166;
     private int mLastPosition = -1;
 
 
@@ -63,7 +63,7 @@ public class AnimRecyclerViewAdapter<T extends RecyclerView.ViewHolder>
                     });
                     view.startAnimation(animation);
                 }
-            }, DELAY);
+            }, DELAY );
             mLastPosition = position;
         }
     }

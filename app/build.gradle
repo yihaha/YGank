@@ -32,6 +32,16 @@ android {
 dependencies {
     compile fileTree(include: ['*.jar'], dir: 'libs')
     //    testCompile 'junit:junit:4.12'
+    compile files('libs/BmobSDK_V3.4.6_0415.jar')
+    compile files('libs/MobCommons-2016.0406.1915.jar')
+    compile files('libs/MobTools-2016.0406.1915.jar')
+    compile files('libs/ShareSDK-Core-2.7.1.jar')
+    compile files('libs/ShareSDK-QQ-2.7.1.jar')
+    compile files('libs/ShareSDK-QZone-2.7.1.jar')
+    compile files('libs/ShareSDK-SinaWeibo-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-Core-2.7.1.jar')
+    compile files('libs/ShareSDK-Wechat-Moments-2.7.1.jar')
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
     //    compile 'com.squareup.retrofit2:retrofit:2.0.0'
@@ -48,18 +58,12 @@ dependencies {
     compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.squareup.retrofit2:converter-gson:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
-//    compile 'com.commit451:PhotoView:1.2.5'
-    compile 'com.github.chrisbanes:PhotoView:1.2.6'
-//    compile "com.github.chrisbanes.photoview:library:1.2.6"
+    //1.2.6这个版本不知道怎么缩小图片
+//    compile 'com.github.chrisbanes:PhotoView:1.2.6'
+//    compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    compile 'com.commit451:PhotoView:1.2.4'
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
-    compile files('libs/BmobSDK_V3.4.6_0415.jar')
-    compile files('libs/MobCommons-2016.0406.1915.jar')
-    compile files('libs/MobTools-2016.0406.1915.jar')
-    compile files('libs/ShareSDK-Core-2.7.1.jar')
-    compile files('libs/ShareSDK-QQ-2.7.1.jar')
-    compile files('libs/ShareSDK-QZone-2.7.1.jar')
-    compile files('libs/ShareSDK-SinaWeibo-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-Core-2.7.1.jar')
-    compile files('libs/ShareSDK-Wechat-Moments-2.7.1.jar')
+    compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.bm.photoview:library:1.4.0'
 }

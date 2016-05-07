@@ -40,8 +40,6 @@ public class DetailActivity extends BaseActivity {
     @Bind(R.id.detail_recycleview)
     RecyclerView mRecycleView;
 
-    @Bind(R.id.appbarlayout)
-    AppBarLayout mAppBarLayout;
 
     @Bind(R.id.collbarlayout)
     CollapsingToolbarLayout mCollBarLayout;

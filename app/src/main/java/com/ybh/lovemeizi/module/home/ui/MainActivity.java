@@ -53,17 +53,10 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.coordinatorlayout)
     CoordinatorLayout mCoordinatorLayout;
 
-    @Bind(R.id.appbarlayout)
-    AppBarLayout mAppBarLayout;
+//    @Bind(R.id.appbarlayout)
+//    AppBarLayout mAppBarLayout;
 
-    @Bind(R.id.toolbar)
-    Toolbar toolbar;
 
-    //    @Bind(R.id.tablayout)
-//    TabLayout mTabLayout;
-//
-//    @Bind(R.id.viewpager)
-//    ViewPager mViewPager;
     @Bind(R.id.meizi_listview)
     RecyclerView mRecycleView;
 
@@ -91,12 +84,9 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initView() {
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }
 
-        setSupportActionBar(toolbar);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, toolbar, R.string.open, R.string.close);
+//        setSupportActionBar(toolbar);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,mToolbar , R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
