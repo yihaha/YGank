@@ -1,8 +1,8 @@
 package com.ybh.lovemeizi.module.home.ui;
 
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
@@ -10,10 +10,15 @@ import android.webkit.WebView;
 import android.webkit.WebViewClient;
 
 import com.daimajia.numberprogressbar.NumberProgressBar;
+import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
+import com.ybh.lovemeizi.model.GankData;
 import com.ybh.lovemeizi.module.BaseActivity;
+import com.ybh.lovemeizi.utils.ETCUtil;
+import com.ybh.lovemeizi.utils.ShareUtil;
 
 import butterknife.Bind;
+import cn.sharesdk.framework.Platform;
 
 public class WebActivity extends BaseActivity {
 
@@ -22,6 +27,7 @@ public class WebActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView mWebView;
+    private GankData mGank;
 
     @Override
     public int getContentViewId() {
@@ -50,12 +56,13 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        String url = getIntent().getStringExtra("url");
-        String title = getIntent().getStringExtra("desc");
-        setActivityTitle(title,true);
+        mGank = (GankData) getIntent().getSerializableExtra(Contant.Y_GANKDATA);
+//        String url =mGank.url;
+//        String title =mGank.desc;
+        setActivityTitle(mGank.desc, true);
         mWebView.setWebViewClient(new YWebClient());
         mWebView.setWebChromeClient(new YWebChromClient());
-        mWebView.loadUrl(url);
+        mWebView.loadUrl(mGank.url);
     }
 
     @Override
@@ -100,7 +107,7 @@ public class WebActivity extends BaseActivity {
         }
     }
 
-    class YWebClient extends WebViewClient{
+    class YWebClient extends WebViewClient {
         @Override
         public boolean shouldOverrideUrlLoading(WebView view, String url) {
             view.loadUrl(url);
@@ -108,18 +115,53 @@ public class WebActivity extends BaseActivity {
         }
     }
 
-    class YWebChromClient extends WebChromeClient{
+    class YWebChromClient extends WebChromeClient {
         //进度条
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
             topProgressBar.setProgress(newProgress);
-            if (newProgress==100){
+            if (newProgress == 100) {
                 topProgressBar.setVisibility(View.GONE);
-            }else {
+            } else {
                 topProgressBar.setVisibility(View.VISIBLE);
             }
         }
     }
 
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_webactivity, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.web_share:
+                showShare();
+                return true;
+            case R.id.web_copy:
+                copyContent();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 分享
+     */
+    private void showShare() {
+        if (mGank != null) {
+            ShareUtil.sdkShare(WebActivity.this, mGank.url, mGank.type, mGank.desc, Platform.SHARE_WEBPAGE);
+        }
+    }
+
+    private void copyContent() {
+        if (mGank != null) {
+            ETCUtil.copyToClipBoard(WebActivity.this, mGank.url, "链接复制成功!");
+        }
+    }
 }

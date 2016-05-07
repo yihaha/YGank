@@ -11,6 +11,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.a.a.V;
+import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.model.GankData;
 import com.ybh.lovemeizi.module.home.ui.WebActivity;
@@ -88,8 +89,9 @@ public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHol
         void goWeb(View view){
             GankData gankData = mDatas.get(getLayoutPosition());
             Intent intent = new Intent(view.getContext(), WebActivity.class);
-            intent.putExtra("url", gankData.url);
-            intent.putExtra("desc",gankData.desc);
+//            intent.putExtra("url", gankData.url);
+//            intent.putExtra("desc",gankData.desc);
+            intent.putExtra(Contant.Y_GANKDATA,gankData);
             view.getContext().startActivity(intent);
         }
 

@@ -8,6 +8,9 @@ import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
@@ -21,7 +24,9 @@ import com.ybh.lovemeizi.model.TodayDataBean;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.DetailAdapter;
 import com.ybh.lovemeizi.utils.DateUtil;
+import com.ybh.lovemeizi.utils.ShareUtil;
 import com.ybh.lovemeizi.utils.SlidrUtil;
+import com.ybh.lovemeizi.utils.ToastSnackUtil;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
@@ -29,6 +34,7 @@ import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
+import cn.sharesdk.framework.Platform;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
@@ -72,7 +78,22 @@ public class DetailActivity extends BaseActivity {
         Intent intent = getIntent();
         String date = intent.getStringExtra(Contant.Y_DATE);
         Date time = new Date(Long.parseLong(date));
+        //设置标题
+        setActivityTitle(DateUtil.onDate2String(time, "yyyy/MM/dd"), true);
         loadData(DateUtil.onDate2String(time, "yyyy"), DateUtil.onDate2String(time, "MM"), DateUtil.onDate2String(time, "dd"));
+        mCollBarLayout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (mGankDatas.size()>0){
+                    GankData gankData = mGankDatas.get(0);
+                    Intent webIntent = new Intent(DetailActivity.this, WebActivity.class);
+//                    webIntent.putExtra("url",gankData.url);
+//                    webIntent.putExtra("desc",gankData.desc);
+                    webIntent.putExtra(Contant.Y_GANKDATA,gankData);
+                    startActivity(webIntent);
+                }
+            }
+        });
     }
 
     private void loadData(String year, String month, String day) {
@@ -118,6 +139,34 @@ public class DetailActivity extends BaseActivity {
         if (results.introsList != null) mGankDatas.addAll(results.introsList);
 
         return mGankDatas;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_detailactivity, menu);
+        return super.onCreateOptionsMenu(menu);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.detail_share:
+                showShare();
+                return true;
+            default:
+                break;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void showShare() {
+        if (mGankDatas.size() > 0) {
+            GankData gankData = mGankDatas.get(0);
+            ShareUtil.sdkShare(DetailActivity.this, gankData.url
+                    , gankData.type,gankData.desc, Platform.SHARE_VIDEO);
+        } else {
+            ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
+        }
     }
 
 }

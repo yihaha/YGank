@@ -1,5 +1,7 @@
 package com.ybh.lovemeizi;
 
+import retrofit2.http.PUT;
+
 /**
  * Created by y on 2016/4/21.
  */
@@ -10,4 +12,7 @@ public class Contant {
     public final static String Y_MONTH = "month";
     public final static String Y_DAY = "day";
     public final static String Y_DATE="ydate";
+    public final static String Y_GANKDATA="ygankdata";
+
+
 }

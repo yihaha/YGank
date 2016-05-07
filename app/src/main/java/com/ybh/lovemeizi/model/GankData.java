@@ -1,12 +1,13 @@
 package com.ybh.lovemeizi.model;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 每个具体数据对应的属性(基本相同)
  * Created by y on 2016/4/6.
  */
-public class GankData {
+public class GankData implements Serializable {
     //数据都有相同的属性
     /**
      * _id : 56cc6d23421aa95caa707bdf

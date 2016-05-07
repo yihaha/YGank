@@ -11,16 +11,19 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.squareup.picasso.Picasso;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
+import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.DialogUtil;
 import com.ybh.lovemeizi.utils.ImgSaveUtil;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
+import com.ybh.lovemeizi.utils.ShareUtil;
 import com.ybh.lovemeizi.utils.SlidrUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
+import com.ybh.lovemeizi.utils.ToastSnackUtil;
 import com.ybh.lovemeizi.widget.YBottomSheetDialogView;
 import com.ybh.lovemeizi.widget.YDialog;
 import com.ybh.lovemeizi.widget.slidr.model.SlidrInterface;
@@ -45,7 +48,7 @@ import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.schedulers.Schedulers;
 
-public class ShowPicActivity extends BaseActivity implements PlatformActionListener {
+public class ShowPicActivity extends BaseActivity {
     @Bind(R.id.show_meizi_img)
     ImageView mImg;
 
@@ -56,6 +59,8 @@ public class ShowPicActivity extends BaseActivity implements PlatformActionListe
     public static final String MEIZI_IMG = "meiziImg";
 
     private String imgUrl;
+    private String date;
+    private GankData mGank;
 
     @Override
     public int getContentViewId() {
@@ -78,8 +83,11 @@ public class ShowPicActivity extends BaseActivity implements PlatformActionListe
 
     @Override
     public void initData() {
-        imgUrl = getIntent().getStringExtra("imgUrl");
-        String date = getIntent().getStringExtra("date");
+
+        mGank = (GankData) getIntent().getSerializableExtra(Contant.Y_GANKDATA);
+
+        imgUrl = mGank.url;
+        date = DateUtil.onDate2String(mGank.publishedAt, "yyyy/MM/dd");
         setActivityTitle(date, true);
 //        Glide.with(ShowPicActivity.this).load(imgUrl).into(mImg);
         Picasso.with(this).load(imgUrl).into(mImg);
@@ -93,109 +101,14 @@ public class ShowPicActivity extends BaseActivity implements PlatformActionListe
         });
     }
 
-
-    private void showShare() {
-        ShareSDK.initSDK(this);
-        PreferenceUtil preferenceUtil = new PreferenceUtil(ShowPicActivity.this);
-        boolean isNightMode = preferenceUtil.getBoolean(Contant.DAY_NIGHT_MODE);
-        final YBottomSheetDialogView shareDialog = new YBottomSheetDialogView(ShowPicActivity.this, isNightMode == true ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
-
-        shareDialog.bottomClickCallback(new YBottomSheetDialogView.BottomClickListener() {
-            @Override
-            public void cancleShare() {
-                shareDialog.dismissDialog();
-            }
-
-            @Override
-            public void onItemcListener(String item) {
-                ShareParams sp = new ShareParams();
-                sp.setTitle("分享图片");  //分享标题
-                sp.setText("图片文本");   //分享文本
-                sp.setImageUrl(imgUrl);//网络图片rul
-                sp.setTitleUrl(imgUrl);  //网友点进链接后，可以看到分享的详情
-                sp.setUrl(imgUrl);   //网友点进链接后，可以看到分享的详情
-                sp.setShareType(Platform.SHARE_IMAGE);//非常重要：一定要设置分享属性
-                switch (item) {
-                    case "微信":
-                        //3、非常重要：获取平台对象
-                        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-                        wechat.SSOSetting(false);
-                        wechat.setPlatformActionListener(ShowPicActivity.this); // 设置分享事件回调
-                        // 执行分享
-                        wechat.share(sp);
-                        break;
-                    case "朋友圈":
-
-                        //3、非常重要：获取平台对象
-                        Platform wechatMoment = ShareSDK.getPlatform(WechatMoments.NAME);
-                        wechatMoment.setPlatformActionListener(ShowPicActivity.this); // 设置分享事件回调
-                        // 执行分享
-                        wechatMoment.share(sp);
-                        break;
-
-                    case "QQ":
-
-//                        sp.setShareType(Platform.SHARE_WEBPAGE);//非常重要：一定要设置分享属性
-//                        sp.setTitle("分享图片");  //分享标题
-//                        sp.setText("图片文本");   //分享文本
-//                        sp.setImageUrl(imgUrl);//网络图片rul
-//                        sp.setUrl(myAppUrl);   //网友点进链接后，可以看到分享的详情
-
-                        //3、非常重要：获取平台对象
-                        Platform qqchat = ShareSDK.getPlatform(QQ.NAME);
-                        qqchat.setPlatformActionListener(ShowPicActivity.this); // 设置分享事件回调
-                        // 执行分享
-                        qqchat.share(sp);
-                        break;
-
-                    case "QQ空间":
-
-                        //3、非常重要：获取平台对象
-                        Platform qqZonechat = ShareSDK.getPlatform(QZone.NAME);
-                        qqZonechat.setPlatformActionListener(ShowPicActivity.this); // 设置分享事件回调
-                        // 执行分享
-                        qqZonechat.share(sp);
-                        break;
-                    case "新浪微博":
-
-                        //3、非常重要：获取平台对象
-                        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
-                        sinaWeibo.setPlatformActionListener(ShowPicActivity.this); // 设置分享事件回调
-                        // 执行分享
-                        sinaWeibo.share(sp);
-                        break;
-
-                    default:
-                        break;
-
-                }
-                shareDialog.dismissDialog();
-            }
-        });
-
+    private void showShare(){
+        ShareUtil.sdkShare(ShowPicActivity.this, imgUrl, mGank.type, date,Platform.SHARE_IMAGE);
     }
-
-    @Override
-    public void onComplete(Platform platform, int i, HashMap<String, Object> hashMap) {
-        String name = platform.getName();
-//        Toast.makeText(ShowPicActivity.this, "分享成功" + name, Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onError(Platform platform, int i, Throwable throwable) {
-        String name = platform.getName();
-    }
-
-    @Override
-    public void onCancel(Platform platform, int i) {
-        String name = platform.getName();
-    }
-
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-
+        Picasso.with(this).cancelRequest(mImg);
     }
 
     @Override
@@ -209,10 +122,10 @@ public class ShowPicActivity extends BaseActivity implements PlatformActionListe
         switch (item.getItemId()) {
             case R.id.menu_save:
                 showSaveImgDialog();
-                break;
+                return true;
             case R.id.menu_share:
                 showShare();
-                break;
+                return true;
             default:
                 break;
         }
@@ -240,14 +153,15 @@ public class ShowPicActivity extends BaseActivity implements PlatformActionListe
                             public void onError(Throwable e) {
                                 Snackbar.make(mImg, "异常: " + e.getMessage() + "\n请再次尝试", Snackbar.LENGTH_LONG).setAction("知道了", new View.OnClickListener() {
                                     @Override
-                                    public void onClick(View v) {}
+                                    public void onClick(View v) {
+                                    }
                                 }).show();
                             }
 
                             @Override
                             public void onNext(Uri uri) {
                                 File ygankDir = new File(Environment.getExternalStorageDirectory(), "ygank");
-                                Snackbar.make(mImg, String.format("图片已保存到%s文件夹下", ygankDir.getAbsolutePath()), Snackbar.LENGTH_SHORT).show();
+                                ToastSnackUtil.snackbarShort(mImg, String.format("图片已保存到%s文件夹下", ygankDir.getAbsolutePath()));
                             }
                         });
                 DialogUtil.dismiss();
