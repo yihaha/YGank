@@ -1,9 +1,8 @@
 package com.ybh.lovemeizi.http;
 
-import com.ybh.lovemeizi.model.AllData;
-import com.ybh.lovemeizi.model.TodayDataBean;
+import com.ybh.lovemeizi.model.gankio.AllData;
+import com.ybh.lovemeizi.model.gankio.TodayDataBean;
 
-import retrofit2.Call;
 import retrofit2.http.GET;
 import retrofit2.http.Path;
 import rx.Observable;

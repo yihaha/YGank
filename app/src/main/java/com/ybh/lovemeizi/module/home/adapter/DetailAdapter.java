@@ -6,14 +6,11 @@ import android.text.SpannableStringBuilder;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.LinearLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.a.a.V;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.home.ui.WebActivity;
 import com.ybh.lovemeizi.utils.StringUtil;
 
@@ -26,7 +23,7 @@ import butterknife.OnClick;
 /**
  * Created by y on 2016/5/5.
  */
-public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHolder> {
+public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder> {
     private List<GankData> mDatas;
 
     public DetailAdapter(List<GankData> gankDatas) {
@@ -63,7 +60,7 @@ public class DetailAdapter extends AnimRecyclerViewAdapter<DetailAdapter.ViewHol
         //加这句后才有效果
         CharSequence desc = spanBuilder.subSequence(0, spanBuilder.length());
         holder.detail_desc.setText(desc);
-        showItemAnim(holder.detail_desc,position);//执行动画
+//        showItemAnim(holder.detail_desc,position);//执行动画
 
     }
 

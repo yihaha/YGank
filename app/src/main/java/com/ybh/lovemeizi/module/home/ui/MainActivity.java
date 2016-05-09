@@ -1,8 +1,5 @@
 package com.ybh.lovemeizi.module.home.ui;
 
-import android.content.Intent;
-import android.os.Build;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CoordinatorLayout;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
@@ -11,11 +8,9 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 
@@ -24,8 +19,9 @@ import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.GankRetrofitService;
 import com.ybh.lovemeizi.http.GankServiceFactory;
-import com.ybh.lovemeizi.model.AllData;
-import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.model.gankio.AllData;
+import com.ybh.lovemeizi.model.gankio.GankData;
+import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
@@ -86,7 +82,7 @@ public class MainActivity extends BaseActivity {
     public void initView() {
 
 //        setSupportActionBar(toolbar);
-        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout,mToolbar , R.string.open, R.string.close);
+        ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
@@ -135,7 +131,6 @@ public class MainActivity extends BaseActivity {
         BmobUpdateAgent.update(this);
 
     }
-
 
 
     /**
@@ -206,7 +201,7 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
 //                        mRefreshLayout.finishRefreshing();
-                        KLog.w("onError",e+"");
+                        KLog.w("onError", e + "");
                         finishReorLoad();
                     }
 
@@ -247,8 +242,13 @@ public class MainActivity extends BaseActivity {
     private AllData onMerageDesc(AllData picAll, AllData videoAll) {
         int maxLength = picAll.results.size() > videoAll.results.size() ? picAll.results.size() : videoAll.results.size();
         for (int i = 0; i < maxLength; i++) {
-            GankData gankData = picAll.results.get(i);
-            gankData.desc = videoAll.results.get(i).desc;
+            GankData picGank = picAll.results.get(i);
+            GankData videoGank = videoAll.results.get(i);
+            //可能发生当前图片和当前视频不是同一天内容,进入当天详情时"描述内容"与首页内容不同,会误认为发生数据请求错误
+            if (DateUtil.onDate2String(picGank.publishedAt, "yyyy/MM/dd")
+                    .equals(DateUtil.onDate2String(videoGank.publishedAt, "yyyy/MM/dd"))) {
+                picGank.desc =videoGank.desc;
+            }
         }
         return picAll;
     }

@@ -8,8 +8,10 @@
         android:id="@+id/category_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:padding="16dp"
+        android:paddingLeft="16dp"
+        android:paddingTop="20dp"
         android:text="分类标题"
+        android:textColor="@color/text_666"
         android:textSize="@dimen/text_18sp_size"
         android:textStyle="bold" />
 
@@ -18,8 +20,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:paddingTop="10dp"
-        android:paddingLeft="16dp">
+        android:paddingLeft="16dp"
+        android:paddingTop="10dp">
 
         <TextView
             android:layout_width="wrap_content"
@@ -32,11 +34,12 @@
             android:layout_height="wrap_content" />
 
         <TextView
-            android:layout_gravity="center_vertical"
             android:id="@+id/detail_desc"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="描述信息" />
+            android:layout_gravity="center_vertical"
+            android:text="描述信息"
+            android:textColor="@color/text_9696" />
 
     </LinearLayout>
 

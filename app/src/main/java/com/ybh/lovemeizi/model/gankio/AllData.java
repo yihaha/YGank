@@ -1,4 +1,4 @@
-package com.ybh.lovemeizi.model;
+package com.ybh.lovemeizi.model.gankio;
 
 import com.google.gson.annotations.SerializedName;
 

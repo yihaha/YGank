@@ -5,7 +5,6 @@ import android.net.Uri;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatDelegate;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -15,38 +14,24 @@ import android.widget.TextView;
 import com.squareup.picasso.Picasso;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.DialogUtil;
 import com.ybh.lovemeizi.utils.ImgSaveUtil;
-import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.utils.ShareUtil;
 import com.ybh.lovemeizi.utils.SlidrUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
-import com.ybh.lovemeizi.widget.YBottomSheetDialogView;
 import com.ybh.lovemeizi.widget.YDialog;
 import com.ybh.lovemeizi.widget.slidr.model.SlidrInterface;
 
-import cn.sharesdk.framework.Platform.ShareParams;
-
 import java.io.File;
-import java.util.HashMap;
 
 import butterknife.Bind;
 import cn.sharesdk.framework.Platform;
-import cn.sharesdk.framework.PlatformActionListener;
-import cn.sharesdk.framework.ShareSDK;
-import cn.sharesdk.sina.weibo.SinaWeibo;
-import cn.sharesdk.tencent.qq.QQ;
-import cn.sharesdk.tencent.qzone.QZone;
-import cn.sharesdk.wechat.friends.Wechat;
-import cn.sharesdk.wechat.moments.WechatMoments;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import rx.schedulers.Schedulers;
 
 public class ShowPicActivity extends BaseActivity {
     @Bind(R.id.show_meizi_img)

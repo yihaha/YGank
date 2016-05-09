@@ -2,22 +2,17 @@ package com.ybh.lovemeizi.module.home.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.os.Bundle;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.ActivityOptionsCompat;
 import android.support.v7.widget.RecyclerView;
-import android.text.format.DateUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.home.ui.DetailActivity;
 import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.module.home.ui.MainActivity;

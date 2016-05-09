@@ -1,26 +1,21 @@
 package com.ybh.lovemeizi.module.home.ui;
 
 import android.content.Intent;
-import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
-import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.ImageView;
 
-import com.bumptech.glide.Glide;
 import com.socks.library.KLog;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.GankRetrofitService;
 import com.ybh.lovemeizi.http.GankServiceFactory;
-import com.ybh.lovemeizi.model.GankData;
-import com.ybh.lovemeizi.model.TodayDataBean;
+import com.ybh.lovemeizi.model.gankio.GankData;
+import com.ybh.lovemeizi.model.gankio.TodayDataBean;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.DetailAdapter;
 import com.ybh.lovemeizi.utils.DateUtil;
@@ -28,7 +23,6 @@ import com.ybh.lovemeizi.utils.ShareUtil;
 import com.ybh.lovemeizi.utils.SlidrUtil;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
 
-import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -91,6 +85,8 @@ public class DetailActivity extends BaseActivity {
 //                    webIntent.putExtra("desc",gankData.desc);
                     webIntent.putExtra(Contant.Y_GANKDATA,gankData);
                     startActivity(webIntent);
+                }else {
+                    ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
                 }
             }
         });

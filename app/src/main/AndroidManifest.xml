@@ -3,7 +3,7 @@
     package="com.ybh.lovemeizi">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
@@ -72,9 +72,12 @@
             android:exported="true"
             android:screenOrientation="portrait"
             android:theme="@android:style/Theme.Translucent.NoTitleBar" />
-        <activity android:name=".module.home.ui.DetailActivity" />
-        <activity android:name=".module.home.ui.WebActivity" />
-        <activity android:name=".module.home.ui.ToolBarActivity" />
+        <activity
+            android:name=".module.home.ui.DetailActivity"
+            android:theme="@style/AppTheme.SlidrTheme" />
+        <activity
+            android:name=".module.home.ui.WebActivity"
+            android:theme="@style/AppTheme.SlidrTheme" />
         <activity android:name=".module.home.ui.TestActivity"></activity>
     </application>
 

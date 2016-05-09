@@ -12,10 +12,11 @@ import android.webkit.WebViewClient;
 import com.daimajia.numberprogressbar.NumberProgressBar;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.model.GankData;
+import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.utils.ETCUtil;
 import com.ybh.lovemeizi.utils.ShareUtil;
+import com.ybh.lovemeizi.utils.SlidrUtil;
 
 import butterknife.Bind;
 import cn.sharesdk.framework.Platform;
@@ -36,6 +37,9 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void initView() {
+        // 默认开启侧滑，默认是整个页码侧滑
+        SlidrUtil.initSlidrDefaultConfig(this, true);
+
         WebSettings mWebSetting = mWebView.getSettings();
         /*********打开界面,自适应屏幕************/
         mWebSetting.setUseWideViewPort(true);//可以任意比例缩放
