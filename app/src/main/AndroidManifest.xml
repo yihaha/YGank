@@ -24,6 +24,7 @@
         <activity
             android:name=".module.home.ui.MainActivity"
             android:label="@string/app_name"
+            android:launchMode="singleTask"
             android:theme="@style/AppTheme">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -78,7 +79,14 @@
         <activity
             android:name=".module.home.ui.WebActivity"
             android:theme="@style/AppTheme.SlidrTheme" />
-        <activity android:name=".module.home.ui.TestActivity"></activity>
+
+        <meta-data
+            android:name="channel"
+            android:value="360" />
+
+        <activity android:name=".module.category.ui.CategoryActivity"
+            android:launchMode="singleTask"
+            />
     </application>
 
 </manifest>

@@ -1,4 +1,4 @@
-package com.ybh.lovemeizi.http;
+package com.ybh.lovemeizi.http.gankio;
 
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -11,7 +11,7 @@ public class GankRetrofit {
     private final String GANK_URL="http://gank.io/api/" ;
     private final GankRetrofitService gankRetrofitService;
 
-    GankRetrofit() {
+    public GankRetrofit() {
         Retrofit retrofit = new Retrofit.Builder()
                 .baseUrl(GANK_URL)
                 .addConverterFactory(GsonConverterFactory.create())

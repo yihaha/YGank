@@ -22,7 +22,10 @@ public class ShareUtil {
     /**
      * 利用mob.com的集成分享
      * @param context
-     * @param url
+     * @param url  网址
+     * @param shTitle
+     * @param shContent
+     * @param shType
      */
     public static void sdkShare(final Context context, final String url, final String shTitle, final String shContent, final int shType){
             ShareSDK.initSDK(context);

@@ -15,11 +15,14 @@
         app:layout_scrollFlags="scroll|enterAlways"
         app:popupTheme="@style/ThemeOverlay.AppCompat.Light" />
 
-    <!-- <android.support.design.widget.TabLayout
-         android:id="@+id/tablayout"
-         android:layout_width="match_parent"
-         android:layout_height="wrap_content"
-         app:tabGravity="fill"
-         app:tabIndicatorColor="@android:color/white" />-->
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tablayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:tabGravity="center"
+        app:tabIndicatorColor="@color/white"
+        app:tabSelectedTextColor="@color/white"
+        app:tabTextColor="@color/material_grey_300" />
 
 </android.support.design.widget.AppBarLayout>

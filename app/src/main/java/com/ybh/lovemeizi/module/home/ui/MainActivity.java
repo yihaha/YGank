@@ -17,8 +17,8 @@ import android.widget.Toast;
 import com.socks.library.KLog;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.http.GankRetrofitService;
-import com.ybh.lovemeizi.http.GankServiceFactory;
+import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
+import com.ybh.lovemeizi.http.ApiServiceFactory;
 import com.ybh.lovemeizi.model.gankio.AllData;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.utils.DateUtil;
@@ -70,7 +70,7 @@ public class MainActivity extends BaseActivity {
     private int page = 1;
 
     private List<GankData> meiziList = new ArrayList<>();
-    private GankRetrofitService gService = GankServiceFactory.getSingleService();
+    private GankRetrofitService gService = ApiServiceFactory.getSingleService();
 
     @Override
     public int getContentViewId() {
@@ -91,7 +91,7 @@ public class MainActivity extends BaseActivity {
         //填充侧边栏菜单
         mNavigationView.inflateMenu(R.menu.menu_nav);
 
-        onNavigationViewItemChecked(mNavigationView);
+        onNavigationViewItemChecked(mNavigationView,mDrawerLayout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -133,39 +133,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-    /**
-     * 侧边栏选项
-     *
-     * @param mNavigationView
-     */
-    private void onNavigationViewItemChecked(NavigationView mNavigationView) {
-        mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(MenuItem item) {
-//                int itemId = item.getItemId();
-                switch (item.getItemId()) {
-                    case R.id.nav_home:
-                        Toast.makeText(MainActivity.this, "home", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_category:
-                        Toast.makeText(MainActivity.this, "分类", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_setting:
-                        Toast.makeText(MainActivity.this, "设置", Toast.LENGTH_SHORT).show();
-                        break;
-                    case R.id.nav_about:
-                        Toast.makeText(MainActivity.this, "关于", Toast.LENGTH_SHORT).show();
-                        break;
-
-                }
-
-                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
-
-                return true;
-            }
-        });
-    }
 
 
     @Override

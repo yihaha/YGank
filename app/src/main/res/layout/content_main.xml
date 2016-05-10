@@ -7,37 +7,37 @@
     android:layout_height="match_parent">
 
     <!--<android.support.design.widget.AppBarLayout-->
-        <!--android:id="@+id/appbarlayout"-->
-        <!--android:layout_width="match_parent"-->
-        <!--android:layout_height="wrap_content"-->
-        <!--android:theme="@style/AppTheme">-->
+    <!--android:id="@+id/appbarlayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--android:theme="@style/AppTheme">-->
 
-        <!--&lt;!&ndash;<com.ybh.lovemeizi.widget.YCompatToolbar&ndash;&gt;-->
-        <!--&lt;!&ndash;android:id="@+id/toolbar"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
-        <!--&lt;!&ndash;android:background="?attr/colorPrimary"&ndash;&gt;-->
-        <!--&lt;!&ndash;app:popupTheme="@style/AppTheme.PopupOverlay" />&ndash;&gt;-->
+    <!--&lt;!&ndash;<com.ybh.lovemeizi.widget.YCompatToolbar&ndash;&gt;-->
+    <!--&lt;!&ndash;android:id="@+id/toolbar"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_width="match_parent"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:layout_height="?attr/actionBarSize"&ndash;&gt;-->
+    <!--&lt;!&ndash;android:background="?attr/colorPrimary"&ndash;&gt;-->
+    <!--&lt;!&ndash;app:popupTheme="@style/AppTheme.PopupOverlay" />&ndash;&gt;-->
 
-        <!--<com.ybh.lovemeizi.widget.YCompatToolbar-->
-            <!--android:id="@+id/toolbar"-->
-            <!--android:layout_width="match_parent"-->
-            <!--android:layout_height="?attr/actionBarSize"-->
-            <!--android:background="?attr/colorPrimary"-->
-            <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
-            <!--app:layout_scrollFlags="scroll|enterAlways"-->
-            <!--app:popupTheme="@style/AppTheme" />-->
+    <!--<com.ybh.lovemeizi.widget.YCompatToolbar-->
+    <!--android:id="@+id/toolbar"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="?attr/actionBarSize"-->
+    <!--android:background="?attr/colorPrimary"-->
+    <!--android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"-->
+    <!--app:layout_scrollFlags="scroll|enterAlways"-->
+    <!--app:popupTheme="@style/AppTheme" />-->
 
-        <!--&lt;!&ndash; <android.support.design.widget.TabLayout-->
-             <!--android:id="@+id/tablayout"-->
-             <!--android:layout_width="match_parent"-->
-             <!--android:layout_height="wrap_content"-->
-             <!--app:tabGravity="fill"-->
-             <!--app:tabIndicatorColor="@android:color/white" />&ndash;&gt;-->
+    <!--&lt;!&ndash; <android.support.design.widget.TabLayout-->
+    <!--android:id="@+id/tablayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="wrap_content"-->
+    <!--app:tabGravity="fill"-->
+    <!--app:tabIndicatorColor="@android:color/white" />&ndash;&gt;-->
 
     <!--</android.support.design.widget.AppBarLayout>-->
 
-    <include layout="@layout/ytoolbar"/>
+    <include layout="@layout/ytoolbar" />
 
 
     <com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout
@@ -49,7 +49,9 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/meizi_listview"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingTop="8dp" />
     </com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout>
 
     <!--</android.support.v4.widget.NestedScrollView>-->

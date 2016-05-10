@@ -1,9 +1,11 @@
 package com.ybh.lovemeizi.module.home.ui;
 
+import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
 import android.webkit.WebChromeClient;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
@@ -28,7 +30,9 @@ public class WebActivity extends BaseActivity {
 
     @Bind(R.id.webview)
     WebView mWebView;
-    private GankData mGank;
+    private String mUrl;
+    private String mTitle;
+    private String mDesc;
 
     @Override
     public int getContentViewId() {
@@ -60,13 +64,15 @@ public class WebActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        mGank = (GankData) getIntent().getSerializableExtra(Contant.Y_GANKDATA);
-//        String url =mGank.url;
-//        String title =mGank.desc;
-        setActivityTitle(mGank.desc, true);
+
+        Intent intent = getIntent();
+        mUrl = intent.getStringExtra(Contant.SHARE_URL);
+        mTitle = intent.getStringExtra(Contant.SHARE_TITLE);
+        mDesc = intent.getStringExtra(Contant.SHARE_DESC);
+        setActivityTitle(mTitle, true);
         mWebView.setWebViewClient(new YWebClient());
         mWebView.setWebChromeClient(new YWebChromClient());
-        mWebView.loadUrl(mGank.url);
+        mWebView.loadUrl(mUrl);
     }
 
     @Override
@@ -158,14 +164,23 @@ public class WebActivity extends BaseActivity {
      * 分享
      */
     private void showShare() {
-        if (mGank != null) {
-            ShareUtil.sdkShare(WebActivity.this, mGank.url, mGank.type, mGank.desc, Platform.SHARE_WEBPAGE);
-        }
+        ShareUtil.sdkShare(WebActivity.this, mUrl, mTitle, mDesc, Platform.SHARE_WEBPAGE);
     }
 
+    /**
+     * copy链接到剪切板
+     */
     private void copyContent() {
-        if (mGank != null) {
-            ETCUtil.copyToClipBoard(WebActivity.this, mGank.url, "链接复制成功!");
-        }
+        ETCUtil.copyToClipBoard(WebActivity.this, mUrl, "链接复制成功!");
+    }
+
+    @Override
+    public void finish() {
+        /**为了防止以下错误,参考:http://blog.csdn.net/dreamer0924/article/details/34082687
+         * Activity has leaked window Android.widget.ZoomButtonsController that was originally added here android.view.WindowLeaked:
+         */
+        ViewGroup view = (ViewGroup) getWindow().getDecorView();
+        view.removeAllViews();
+        super.finish();
     }
 }

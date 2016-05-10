@@ -12,8 +12,8 @@ import android.widget.ImageView;
 import com.socks.library.KLog;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.http.GankRetrofitService;
-import com.ybh.lovemeizi.http.GankServiceFactory;
+import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
+import com.ybh.lovemeizi.http.ApiServiceFactory;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.model.gankio.TodayDataBean;
 import com.ybh.lovemeizi.module.BaseActivity;
@@ -68,7 +68,7 @@ public class DetailActivity extends BaseActivity {
 
     @Override
     public void initData() {
-        gankService = GankServiceFactory.getSingleService();
+        gankService = ApiServiceFactory.getSingleService();
         Intent intent = getIntent();
         String date = intent.getStringExtra(Contant.Y_DATE);
         Date time = new Date(Long.parseLong(date));
@@ -81,9 +81,9 @@ public class DetailActivity extends BaseActivity {
                 if (mGankDatas.size()>0){
                     GankData gankData = mGankDatas.get(0);
                     Intent webIntent = new Intent(DetailActivity.this, WebActivity.class);
-//                    webIntent.putExtra("url",gankData.url);
-//                    webIntent.putExtra("desc",gankData.desc);
-                    webIntent.putExtra(Contant.Y_GANKDATA,gankData);
+                    webIntent.putExtra(Contant.SHARE_URL,gankData.url);
+                    webIntent.putExtra(Contant.SHARE_DESC,gankData.type);
+                    webIntent.putExtra(Contant.SHARE_TITLE,gankData.desc);
                     startActivity(webIntent);
                 }else {
                     ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");

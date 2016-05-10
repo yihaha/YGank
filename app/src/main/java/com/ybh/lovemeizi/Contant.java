@@ -14,5 +14,10 @@ public class Contant {
     public final static String Y_DATE="ydate";
     public final static String Y_GANKDATA="ygankdata";
 
+    /**分享用到的一些描述*/
+    public final static String SHARE_URL="share_url";
+    public final static String SHARE_TITLE="share_title";
+    public final static String SHARE_DESC="share_desc";
+
 
 }

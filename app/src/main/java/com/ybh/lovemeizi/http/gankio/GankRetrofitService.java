@@ -1,4 +1,4 @@
-package com.ybh.lovemeizi.http;
+package com.ybh.lovemeizi.http.gankio;
 
 import com.ybh.lovemeizi.model.gankio.AllData;
 import com.ybh.lovemeizi.model.gankio.TodayDataBean;

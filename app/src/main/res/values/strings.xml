@@ -5,4 +5,15 @@
     <string name="close">关闭</string>
     <string name="day_night_mode">切换模式</string>
 
+    <string-array name="fragments_title">
+        <item>知乎</item>
+        <item>Android</item>
+        <item>ios</item>
+        <item>美图</item>
+    </string-array>
+
+    <string name="zhiitemname">"%s 回答了问题"</string>
+    <!--知乎详情链接-->
+    <!--<string name="zhihuAnswerUrl">"http://www.zhihu.com/question/%s/answer/%s"</string>-->
+
 </resources>

@@ -40,14 +40,14 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
     @Override
     public void onBindViewHolder(final ViewHolder holder, int position) {
         final GankData gankData = mDatas.get(position);
-        if (position==0){  //在第一个要显示分类标题
+        if (position == 0) {  //在第一个要显示分类标题
             holder.cateGory_title.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             //跟前一个不同时才显示分类标题
             boolean isShow = mDatas.get(position - 1).type.equals(gankData.type);
-            if (isShow){
+            if (isShow) {
                 holder.cateGory_title.setVisibility(View.GONE);
-            }else {
+            } else {
                 holder.cateGory_title.setVisibility(View.VISIBLE);
             }
         }
@@ -55,7 +55,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         //'作者'字体加入了样式
         SpannableStringBuilder spanBuilder = new SpannableStringBuilder(gankData.desc)
                 .append(StringUtil.setStringStyle(holder.cateGory_title.getContext()
-                        ," (via. "+gankData.who+") ",R.style.YTextStyle));
+                        , " (via. " + gankData.who + ") ", R.style.YTextStyle));
         holder.cateGory_title.setText(gankData.type);
         //加这句后才有效果
         CharSequence desc = spanBuilder.subSequence(0, spanBuilder.length());
@@ -83,12 +83,12 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         }
 
         @OnClick(R.id.detail_ll)
-        void goWeb(View view){
+        void goWeb(View view) {
             GankData gankData = mDatas.get(getLayoutPosition());
             Intent intent = new Intent(view.getContext(), WebActivity.class);
-//            intent.putExtra("url", gankData.url);
-//            intent.putExtra("desc",gankData.desc);
-            intent.putExtra(Contant.Y_GANKDATA,gankData);
+            intent.putExtra(Contant.SHARE_URL, gankData.url);
+            intent.putExtra(Contant.SHARE_DESC, gankData.type);
+            intent.putExtra(Contant.SHARE_TITLE, gankData.desc);
             view.getContext().startActivity(intent);
         }
 

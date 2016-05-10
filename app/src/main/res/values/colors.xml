@@ -15,4 +15,9 @@
     <color name="video_bg">#4D7284</color>
     <color name="gray_text">#bdbdbd</color>
     <color name="sanckbar_color">#B82525</color>
+    <color name="material_grey_300">#e0e0e0</color>
+
+    <color name="overall_bg">#f7f7f7</color>
+    <color name="background_color">#E1E6EB</color>
+    <color name="item_color">#FAFAFA</color>
 </resources>
