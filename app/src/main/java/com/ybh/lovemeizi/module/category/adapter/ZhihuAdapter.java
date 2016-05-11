@@ -20,6 +20,7 @@ import java.util.List;
 import butterknife.Bind;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
+import de.hdodenhof.circleimageview.CircleImageView;
 
 /**
  * Created by y on 2016/5/10.
@@ -56,7 +57,7 @@ public class ZhihuAdapter extends RecyclerView.Adapter<ZhihuAdapter.ViewHolder> 
 
     class ViewHolder extends RecyclerView.ViewHolder {
         @Bind(R.id.avator_icon)
-        ImageView avator_icon;
+        CircleImageView avator_icon;
         @Bind(R.id.avator_name)
         TextView avator_name;
         @Bind(R.id.vote)

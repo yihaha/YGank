@@ -15,6 +15,7 @@ import android.view.WindowManager;
 import android.widget.Toast;
 
 
+import com.umeng.analytics.MobclickAgent;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.YApp;
 import com.ybh.lovemeizi.module.category.ui.CategoryActivity;
@@ -61,6 +62,19 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     public int getContentViewId() {
         return 0;
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        MobclickAgent.onResume(this);
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        MobclickAgent.onPause(this);
     }
 
     @Override

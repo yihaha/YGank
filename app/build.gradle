@@ -1,5 +1,9 @@
 apply plugin: 'com.android.application'
 
+def packageTime() {
+    return new Date().format("yyyy-MM-dd", TimeZone.getTimeZone("UTC"))
+}
+
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
@@ -12,20 +16,106 @@ android {
         versionName "2.1"
     }
 
-
+    signingConfigs {
+        release {}
+    }
 
 
     buildTypes {
 
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
+            zipAlignEnabled true
+            shrinkResources true
         }
 
         release {
-            minifyEnabled false
-            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
             buildConfigField "boolean", "LOG_DEBUG", "false"
+            //去除无用资源
+            shrinkResources true
+            minifyEnabled false //混淆
+            zipAlignEnabled true
+            signingConfig signingConfigs.release
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+
+        applicationVariants.all { variant ->
+            variant.outputs.each { output ->
+                def outputFile = output.outputFile
+                if (outputFile != null && outputFile.name.endsWith('.apk')) {
+
+                    def file = new File(outputFile.parent);
+                    def fileName
+                    // 输出apk名称为appname_v1.0_2015-09-15_09-57-58_wandoujia.apk
+                    // 下面的appname改为你自己的app name
+                    if (variant.buildType.name == "release") {
+                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
+                    } else {
+                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_bate.apk"
+                    }
+                    output.outputFile = new File(outputFile.parent, fileName)
+                }
+            }
+        }
+
+        productFlavors {
+
+            /**多渠道打包***/
+            /**方式一*/
+            fir {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "fir"]
+            }
+
+            Xiaomi {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Xiaomi"]
+            }
+
+            Wandoujia {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Wandoujia"]
+            }
+
+            Y360 {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Y360"]
+            }
+
+            Umeng {
+                manifestPlaceholders = [UMENG_CHANNEL_VALUE: "Umeng"]
+            }
+//            /*** 方式二*/
+//            wandoujia {}
+//            c360 {}
+//            fir {}
+//
+//            productFlavors.all { flavor ->
+//                flavor.manifestPlaceholders = [UMENG_CHANNEL_VALUE: name]
+//            }
+        }
+
+        //lint检查
+        lintOptions {
+            disable "InvalidPackage"
+            abortOnError false
+        }
+
+        /**读取配置文件参数*/
+        def propFile = project.rootProject.file('signing.properties');
+        if (propFile.exists()) {
+            def Properties props = new Properties()
+            props.load(new FileInputStream(propFile))
+            if (props.containsKey('STORE_FILE') && props.containsKey('STORE_PASSWORD') &&
+                    props.containsKey('KEY_ALIAS') && props.containsKey('KEY_PASSWORD')) {
+                android.signingConfigs.release.storeFile = file(props['STORE_FILE'])
+                android.signingConfigs.release.storePassword = props['STORE_PASSWORD']
+                android.signingConfigs.release.keyAlias = props['KEY_ALIAS']
+                android.signingConfigs.release.keyPassword = props['KEY_PASSWORD']
+            } else {
+                android.buildTypes.release.signingConfig = null
+            }
+        } else {
+            android.buildTypes.release.signingConfig = null
+        }
+
+
     }
 }
 
@@ -44,26 +134,37 @@ dependencies {
     compile files('libs/ShareSDK-Wechat-Moments-2.7.1.jar')
     compile 'com.android.support:appcompat-v7:23.2.1'
     compile 'com.android.support:design:23.2.1'
+    compile 'com.android.support:recyclerview-v7:23.2.1'
     //    compile 'com.squareup.retrofit2:retrofit:2.0.0'
     compile 'com.squareup.retrofit2:retrofit:2.0.1'
     compile 'io.reactivex:rxjava:1.1.0'
     compile 'io.reactivex:rxandroid:1.1.0'
-    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.jakewharton:butterknife:7.0.1'
-    compile 'com.squareup.okhttp:okhttp:2.7.4'
-    compile 'com.google.dagger:dagger:2.0.2'
+
     compile 'com.google.code.gson:gson:2.6.2'
-    //    compile 'in.srain.cube:ultra-ptr:1.0.11'
-    compile 'com.chanven.lib:cptr:1.0.0'
-    compile 'com.android.support:recyclerview-v7:23.2.1'
     compile 'com.squareup.retrofit2:converter-gson:2.0.1'
     compile 'com.squareup.retrofit2:adapter-rxjava:2.0.1'
+    /**************未使用****************/
+    //下拉刷新
+//    compile 'in.srain.cube:ultra-ptr:1.0.11'
+//    compile 'com.chanven.lib:cptr:1.0.0'
+
+//    compile 'com.squareup.okhttp:okhttp:2.7.4'
+//    compile 'com.google.dagger:dagger:2.0.2'
     //1.2.6这个版本不知道怎么缩小图片
 //    compile 'com.github.chrisbanes:PhotoView:1.2.6'
 //    compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    compile 'com.commit451:PhotoView:1.2.4'
+//    compile 'com.commit451:PhotoView:1.2.4'
+//    compile 'com.bm.photoview:library:1.4.0'
+    /** ************************************/
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
+    //进度条
     compile 'com.daimajia.numberprogressbar:library:1.2@aar'
+    //加载图片
+    compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
-    compile 'com.bm.photoview:library:1.4.0'
+    //友盟统计
+    compile 'com.umeng.analytics:analytics:latest.integration'
+    //圆图
+    compile 'de.hdodenhof:circleimageview:2.0.0'
 }
