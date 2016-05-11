@@ -68,7 +68,7 @@ public class CategoryActivity extends BaseActivity {
         for (int i = 0; i < titles.length; i++) {
             Bundle bundle = new Bundle();
             bundle.putString("flag", titles[i]);
-            BaseFragment baseFragment=null;
+            BaseFragment baseFragment = null;
             if (i == 0) {
                 baseFragment = new ZhihuFragment();
             } else {
@@ -80,6 +80,7 @@ public class CategoryActivity extends BaseActivity {
 
         yViewPagerAdapter = new YViewPagerAdapter(getSupportFragmentManager(), titles, yFragments);
         mViewPager.setAdapter(yViewPagerAdapter);
+        mViewPager.setOffscreenPageLimit(titles.length); //预加载几页
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);

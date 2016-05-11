@@ -15,6 +15,10 @@ public class ToastSnackUtil {
         Snackbar.make(view,content, Snackbar.LENGTH_SHORT).show();
     }
 
+    public static void snackbarLong(View view,String content){
+        Snackbar.make(view,content, Snackbar.LENGTH_LONG).show();
+    }
+
 
     public static void toastShort(String content){
         Toast.makeText(YApp.yContext,content,Toast.LENGTH_SHORT).show();

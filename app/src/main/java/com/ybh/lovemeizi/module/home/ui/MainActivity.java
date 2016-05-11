@@ -25,6 +25,7 @@ import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
+import com.ybh.lovemeizi.utils.ToastSnackUtil;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
 import java.util.ArrayList;
@@ -169,6 +170,7 @@ public class MainActivity extends BaseActivity {
                     public void onError(Throwable e) {
 //                        mRefreshLayout.finishRefreshing();
                         KLog.w("onError", e + "");
+                        ToastSnackUtil.snackbarLong(mRefreshLayout,"异常: "+e.toString());
                         finishReorLoad();
                     }
 

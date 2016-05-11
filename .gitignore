@@ -9,3 +9,5 @@
 .idea
 app/build
 *.keystore
+app/y_meizi.jks
+app/signing.properties
