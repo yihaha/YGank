@@ -49,3 +49,6 @@ build/
 #gradle
 .gradle/
 captures
+
+app/signing.properties
+app/y_meizi.jks
