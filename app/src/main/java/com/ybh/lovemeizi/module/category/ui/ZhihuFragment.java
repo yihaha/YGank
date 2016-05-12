@@ -2,6 +2,7 @@ package com.ybh.lovemeizi.module.category.ui;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -14,6 +15,7 @@ import com.ybh.lovemeizi.http.zhihu.KanZhihuApi;
 import com.ybh.lovemeizi.model.kanzhihu.KanzhihuAll;
 import com.ybh.lovemeizi.model.kanzhihu.KanzhihuBean;
 import com.ybh.lovemeizi.module.BaseFragment;
+import com.ybh.lovemeizi.module.YBaseLoadingAdapter;
 import com.ybh.lovemeizi.module.category.adapter.ZhihuAdapter;
 import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
@@ -32,6 +34,7 @@ import rx.schedulers.Schedulers;
  * Created by y on 2016/5/10.
  */
 public class ZhihuFragment extends BaseFragment {
+    private static final String TAG = "ZhihuFragment";
 
     private int currPage = 1;
 
@@ -53,9 +56,9 @@ public class ZhihuFragment extends BaseFragment {
         flag = getArguments().getString("flag");
 
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
-        mAdapter = new ZhihuAdapter(mZhihuList);
-        mRecycleView.setAdapter(mAdapter);
         mRecycleView.setLayoutManager(linearLayoutManager);
+        mAdapter = new ZhihuAdapter(mRecycleView, mZhihuList);
+        mRecycleView.setAdapter(mAdapter);
         // 刷新时，指示器旋转后变化的颜色
 //        mSwiRefreshLayout.setColorSchemeResources(R.color.md_black_1000, R.color.white);
         mSwiRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
@@ -67,6 +70,13 @@ public class ZhihuFragment extends BaseFragment {
         });
 
         loadData(currPage);
+        mAdapter.setOnLoadingListener(new YBaseLoadingAdapter.OnLoadingListener() {
+            @Override
+            public void onLoading() {
+                currPage++;
+                loadData(currPage);
+            }
+        });
     }
 
     private void loadData(final int page, String... type) {
@@ -82,13 +92,7 @@ public class ZhihuFragment extends BaseFragment {
                 .map(new Func1<KanzhihuAll, List<KanzhihuBean>>() {
                     @Override
                     public List<KanzhihuBean> call(KanzhihuAll kanzhihuAll) {
-                        List<KanzhihuBean> zhuhuAllList = kanzhihuAll.zhuhuAllList;
-                        //将旧数据清除
-                        if (page == 1 && mZhihuList.size() > 0) {
-                            mZhihuList.clear();
-                        }
-                        mZhihuList.addAll(zhuhuAllList);
-                        return zhuhuAllList;
+                        return kanzhihuAll.zhuhuAllList;
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -102,15 +106,29 @@ public class ZhihuFragment extends BaseFragment {
                     @Override
                     public void onError(Throwable e) {
                         setRefresh(false);
-                        KLog.w("zhifragment_error", e.toString());
-                        ToastSnackUtil.snackbarLong(mRecycleView, "异常: " + e.toString());
+                        mAdapter.setLoadingComplete(); //取消加载布局
+                        KLog.w(TAG, e.toString());
+                        ToastSnackUtil.snackbarLong(mRecycleView, TAG + "异常: " + e.toString());
                     }
 
                     @Override
-                    public void onNext(List<KanzhihuBean> kanzhihuBeen) {
-                        mAdapter.notifyDataSetChanged();
+                    public void onNext(final List<KanzhihuBean> kanzhihuBeen) {
                         KLog.w("zhifragment_next", "得到");
                         setRefresh(false);
+
+                        new Handler().postDelayed(new Runnable() {
+                            @Override
+                            public void run() {
+                                mAdapter.setLoadingComplete(); //取消加载布局
+                                //将旧数据清除
+                                if (page == 1 && mZhihuList.size() > 0) {
+                                    mZhihuList.clear();
+                                }
+                                mZhihuList.addAll(kanzhihuBeen);
+//                        mAdapter.notifyItemRangeChanged(0, mZhihuList.size() - 1);
+                                mAdapter.notifyDataSetChanged();
+                            }
+                        }, 1500);
                     }
                 });
     }

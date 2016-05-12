@@ -44,15 +44,16 @@ android {
                 def outputFile = output.outputFile
                 if (outputFile != null && outputFile.name.endsWith('.apk')) {
 
-                    def file = new File(outputFile.parent);
                     def fileName
-                    // 输出apk名称为appname_v1.0_2015-09-15_09-57-58_wandoujia.apk
+                    // 输出apk名称为appname_v1.0_2016-05-05_09-57-58_wandoujia.apk
                     // 下面的appname改为你自己的app name
-                    if (variant.buildType.name == "release") {
-                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
-                    } else {
-                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_bate.apk"
-                    }
+//                    if (variant.buildType.name == "release") {
+//                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
+//                    }
+//                    else {
+//                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_bate.apk"
+//                    }
+                    fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
             }

@@ -2,16 +2,20 @@ package com.ybh.lovemeizi.module.category.ui;
 
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
 
+import com.socks.library.KLog;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.ApiServiceFactory;
 import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
 import com.ybh.lovemeizi.model.gankio.AllData;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.BaseFragment;
+import com.ybh.lovemeizi.module.YBaseLoadingAdapter;
 import com.ybh.lovemeizi.module.category.adapter.AndroidIosAdapter;
 import com.ybh.lovemeizi.module.category.adapter.MeituAdapter;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
@@ -29,8 +33,7 @@ import rx.schedulers.Schedulers;
  * Created by y on 2016/5/10.
  */
 public class CategoryFragment extends BaseFragment {
-
-    private MeituAdapter meituAdapter;
+    private static final String TAG = "CategoryFragment";
     private String flag;
 
     private GankRetrofitService mService = ApiServiceFactory.getSingleService();
@@ -39,7 +42,8 @@ public class CategoryFragment extends BaseFragment {
     private int DEFAULT_CURRPAGE = 1;//默认第一页数据
     private int pageCount = DEFAULT_PAGECOUNT;
     private int currPage = DEFAULT_CURRPAGE;
-    private AndroidIosAdapter androidIosAdapter;
+    private RecyclerView.LayoutManager layoutManager;
+    private YBaseLoadingAdapter yBaseLoadingAdapter;
 
     @Override
     protected int setContentLayout() {
@@ -53,17 +57,16 @@ public class CategoryFragment extends BaseFragment {
         mGankDatas = new ArrayList<>();
         if (flag.equals("美图")) {
             //竖直分成两列瀑布流
-            StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
-            meituAdapter = new MeituAdapter(mGankDatas);
-            mRecycleView.setLayoutManager(staggeredGridLayoutManager);
-            mRecycleView.setAdapter(meituAdapter);
-            mRecycleView.setPadding(0,8,0,0); //瀑布流自带有间隙,此处进行缩小
+            layoutManager = new StaggeredGridLayoutManager(2, StaggeredGridLayoutManager.VERTICAL);
+            mRecycleView.setLayoutManager(layoutManager); //放在这里是因为adapter里面用到这个属性
+            yBaseLoadingAdapter = new MeituAdapter(mRecycleView, mGankDatas);
+            mRecycleView.setPadding(0, 8, 0, 0); //瀑布流自带有间隙,此处进行缩小
         } else {
-            LinearLayoutManager layoutManager = new LinearLayoutManager(getActivity());
-            androidIosAdapter = new AndroidIosAdapter(mGankDatas);
+            layoutManager = new LinearLayoutManager(getActivity());
             mRecycleView.setLayoutManager(layoutManager);
-            mRecycleView.setAdapter(androidIosAdapter);
+            yBaseLoadingAdapter = new AndroidIosAdapter(mRecycleView, mGankDatas);
         }
+        mRecycleView.setAdapter(yBaseLoadingAdapter);
         mSwiRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
@@ -73,6 +76,14 @@ public class CategoryFragment extends BaseFragment {
         });
 
         loadData(pageCount, currPage);
+        yBaseLoadingAdapter.setOnLoadingListener(new YBaseLoadingAdapter.OnLoadingListener() {
+            @Override
+            public void onLoading() {
+                currPage++;
+                loadData(pageCount, currPage);
+            }
+        });
+
     }
 
 
@@ -115,22 +126,33 @@ public class CategoryFragment extends BaseFragment {
                         @Override
                         public void onError(Throwable e) {
                             setRefresh(false);
-                            ToastSnackUtil.snackbarLong(mSwiRefreshLayout, "异常: " + e.toString());
+                            yBaseLoadingAdapter.setLoadingComplete();
+                            KLog.w(TAG+"得到数据");
+                            ToastSnackUtil.snackbarLong(mSwiRefreshLayout, TAG + "异常: " + e.toString());
                         }
 
                         @Override
-                        public void onNext(List<GankData> gankDatas) {
-                            if (currPage == 1 && mGankDatas.size() > 0) {
-                                mGankDatas.clear();
-                            }
-                            mGankDatas.addAll(gankDatas);
-                            if (flag.equals("美图")) {
-                                meituAdapter.notifyDataSetChanged();
-                            } else {
-                                androidIosAdapter.notifyDataSetChanged();
-
-                            }
+                        public void onNext(final List<GankData> gankDatas) {
+                            KLog.w(TAG+"得到数据");
                             setRefresh(false);//取消刷新
+                            //为了让加载更多消失的不会太快
+                            new Handler().postDelayed(new Runnable() {
+                                @Override
+                                public void run() {
+                                    yBaseLoadingAdapter.setLoadingComplete();
+                                    if (currPage == 1 && mGankDatas.size() > 0) {
+                                        mGankDatas.clear();
+                                    }
+                                    mGankDatas.addAll(gankDatas);
+//                                    if (flag.equals("美图")) {
+//                                        yBaseLoadingAdapter.notifyItemRangeChanged(1, mGankDatas.size()-1);
+//                                    } else {
+//                                        yBaseLoadingAdapter.notifyDataSetChanged();
+//                                    }
+                                        yBaseLoadingAdapter.notifyDataSetChanged();
+                                }
+                            }, 1500);
+
                         }
                     });
         }

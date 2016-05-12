@@ -34,8 +34,9 @@ public class YImageView extends ImageView {
         //取最小的值
 //        int i = (width > height) ? (width = height) : (height = width);
         if (width>0){
-            //为了让图片的高度不是统一高度
-            height = (int) (Math.random() * (width/2) + width);
+            //为了让图片的高度不是统一高度()recycleView加载中效果不是很好)
+//            height = (int) (Math.random() * (width/2) + width);
+            height = (int) (width*1.5+0.5);
         }
         KLog.w("YImage >>>  ",width);
         setMeasuredDimension(width,height);

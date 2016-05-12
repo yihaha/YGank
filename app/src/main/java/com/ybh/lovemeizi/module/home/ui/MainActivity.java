@@ -25,6 +25,7 @@ import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
+import com.ybh.lovemeizi.utils.StatusBarUtil;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
@@ -65,6 +66,7 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.relayout)
     YRefreshLayout mRefreshLayout;
+    private static final String TAG = "MainActivity";
 
     private MainRecyclAdapter mainRecyclAdapter;
     private final static int AVGCOUNT = 10; //每页数据
@@ -78,10 +80,15 @@ public class MainActivity extends BaseActivity {
         return R.layout.activity_main;
     }
 
+    @Override
+    protected void setStatusBar() {
+        int color = getResources().getColor(R.color.colorPrimary);
+//        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.main_drawerlayout), color, 0);
+        StatusBarUtil.setColorForDrawerLayout(this,(DrawerLayout) findViewById(R.id.main_drawerlayout),colorPrimary,0);
+    }
 
     @Override
     public void initView() {
-
 //        setSupportActionBar(toolbar);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
@@ -92,7 +99,7 @@ public class MainActivity extends BaseActivity {
         //填充侧边栏菜单
         mNavigationView.inflateMenu(R.menu.menu_nav);
 
-        onNavigationViewItemChecked(mNavigationView,mDrawerLayout);
+        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -134,8 +141,6 @@ public class MainActivity extends BaseActivity {
     }
 
 
-
-
     @Override
     public void initData() {
 //        loadData();
@@ -170,7 +175,7 @@ public class MainActivity extends BaseActivity {
                     public void onError(Throwable e) {
 //                        mRefreshLayout.finishRefreshing();
                         KLog.w("onError", e + "");
-                        ToastSnackUtil.snackbarLong(mRefreshLayout,"异常: "+e.toString());
+                        ToastSnackUtil.snackbarLong(mRefreshLayout, TAG + "异常: " + e.toString());
                         finishReorLoad();
                     }
 
@@ -216,7 +221,7 @@ public class MainActivity extends BaseActivity {
             //可能发生当前图片和当前视频不是同一天内容,进入当天详情时"描述内容"与首页内容不同,会误认为发生数据请求错误
             if (DateUtil.onDate2String(picGank.publishedAt, "yyyy/MM/dd")
                     .equals(DateUtil.onDate2String(videoGank.publishedAt, "yyyy/MM/dd"))) {
-                picGank.desc =videoGank.desc;
+                picGank.desc = videoGank.desc;
             }
         }
         return picAll;

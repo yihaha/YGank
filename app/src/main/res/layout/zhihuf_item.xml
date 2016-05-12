@@ -17,8 +17,7 @@
         <de.hdodenhof.circleimageview.CircleImageView
             android:id="@+id/avator_icon"
             android:layout_width="33dp"
-            android:layout_height="33dp"
-            android:src="@mipmap/default_avator" />
+            android:layout_height="33dp" />
 
         <TextView
             android:id="@+id/avator_name"

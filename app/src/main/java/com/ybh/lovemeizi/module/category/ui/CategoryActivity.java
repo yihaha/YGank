@@ -16,6 +16,7 @@ import com.ybh.lovemeizi.model.kanzhihu.KanzhihuBean;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.BaseFragment;
 import com.ybh.lovemeizi.module.category.adapter.YViewPagerAdapter;
+import com.ybh.lovemeizi.utils.StatusBarUtil;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,6 +48,13 @@ public class CategoryActivity extends BaseActivity {
         return R.layout.activity_category;
     }
 
+
+    @Override
+    protected void setStatusBar() {
+        int color = getResources().getColor(R.color.colorPrimary);
+        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.drawerlayout), color, 0);
+    }
+
     @Override
     public void initView() {
         setActivityTitle("分类", true);
@@ -59,6 +67,7 @@ public class CategoryActivity extends BaseActivity {
         //填充侧边栏菜单
         mNavigationView.inflateMenu(R.menu.menu_nav);
         onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
+        StatusBarUtil.setTranslucent(this);
     }
 
     @Override
@@ -84,12 +93,8 @@ public class CategoryActivity extends BaseActivity {
         mTabLayout.setupWithViewPager(mViewPager);
         mTabLayout.setTabGravity(TabLayout.GRAVITY_FILL);
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
-        loadData();
     }
 
-    private void loadData() {
-
-    }
 
 
 }

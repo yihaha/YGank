@@ -85,10 +85,7 @@ public class DetailAdapter extends RecyclerView.Adapter<DetailAdapter.ViewHolder
         @OnClick(R.id.detail_ll)
         void goWeb(View view) {
             GankData gankData = mDatas.get(getLayoutPosition());
-            Intent intent = new Intent(view.getContext(), WebActivity.class);
-            intent.putExtra(Contant.SHARE_URL, gankData.url);
-            intent.putExtra(Contant.SHARE_DESC, gankData.type);
-            intent.putExtra(Contant.SHARE_TITLE, gankData.desc);
+            Intent intent = WebActivity.newIntent(view.getContext(), gankData.desc, gankData.type, gankData.url);
             view.getContext().startActivity(intent);
         }
 

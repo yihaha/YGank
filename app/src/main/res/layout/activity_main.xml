@@ -4,11 +4,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/main_drawerlayout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:fitsSystemWindows="true"
+    >
 
     <include layout="@layout/content_main" />
 
-    <include layout="@layout/avigationview"/>
+    <include layout="@layout/avigationview" />
 
 </android.support.v4.widget.DrawerLayout>
 

@@ -15,5 +15,10 @@
     <string name="zhiitemname">"%s 回答了问题"</string>
     <!--知乎详情链接-->
     <!--<string name="zhihuAnswerUrl">"http://www.zhihu.com/question/%s/answer/%s"</string>-->
+    <string name="bottomloading_text">正在加载...</string>
+    <string name="title_activity_test_draw">TestDrawActivity</string>
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
 
 </resources>

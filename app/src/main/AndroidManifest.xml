@@ -82,15 +82,18 @@
 
         <meta-data
             android:name="UMENG_APPKEY"
-            android:value="573216bf67e58e1a6c001394"></meta-data>
+            android:value="573216bf67e58e1a6c001394" />
         <meta-data
             android:name="UMENG_CHANNEL"
             android:value="${UMENG_CHANNEL_VALUE}" />
 
-
-        <activity android:name=".module.category.ui.CategoryActivity"
-            android:launchMode="singleTask"
-            />
+        <activity
+            android:name=".module.category.ui.CategoryActivity"
+            android:launchMode="singleTask" />
+        <activity
+            android:name=".module.category.ui.TestDrawActivity"
+            android:label="@string/title_activity_test_draw"
+            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

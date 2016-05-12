@@ -78,14 +78,11 @@ public class DetailActivity extends BaseActivity {
         mCollBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (mGankDatas.size()>0){
+                if (mGankDatas.size() > 0) {
                     GankData gankData = mGankDatas.get(0);
-                    Intent webIntent = new Intent(DetailActivity.this, WebActivity.class);
-                    webIntent.putExtra(Contant.SHARE_URL,gankData.url);
-                    webIntent.putExtra(Contant.SHARE_DESC,gankData.type);
-                    webIntent.putExtra(Contant.SHARE_TITLE,gankData.desc);
+                    Intent webIntent = WebActivity.newIntent(DetailActivity.this, gankData.desc, gankData.type, gankData.url);
                     startActivity(webIntent);
-                }else {
+                } else {
                     ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
                 }
             }
@@ -159,7 +156,7 @@ public class DetailActivity extends BaseActivity {
         if (mGankDatas.size() > 0) {
             GankData gankData = mGankDatas.get(0);
             ShareUtil.sdkShare(DetailActivity.this, gankData.url
-                    , gankData.type,gankData.desc, Platform.SHARE_VIDEO);
+                    , gankData.type, gankData.desc, Platform.SHARE_VIDEO);
         } else {
             ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
         }

@@ -1,5 +1,6 @@
 package com.ybh.lovemeizi.module.home.ui;
 
+import android.content.Context;
 import android.content.Intent;
 import android.view.KeyEvent;
 import android.view.Menu;
@@ -37,6 +38,14 @@ public class WebActivity extends BaseActivity {
     @Override
     public int getContentViewId() {
         return R.layout.activity_web;
+    }
+
+    public static Intent newIntent(Context context, String title, String desc, String url) {
+        Intent intent = new Intent(context, WebActivity.class);
+        intent.putExtra(Contant.SHARE_TITLE, title);
+        intent.putExtra(Contant.SHARE_DESC, desc);
+        intent.putExtra(Contant.SHARE_URL, url);
+        return intent;
     }
 
     @Override

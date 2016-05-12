@@ -115,7 +115,7 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
             Glide.with(mContext)
                     .load(gankData.url)
                     .centerCrop()
-                    .placeholder(R.mipmap.defaultmeizi)
+//                    .placeholder(R.mipmap.defaultmeizi)
                     .dontAnimate()
                     .into(meizi_img);
         }
