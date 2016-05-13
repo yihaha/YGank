@@ -11,7 +11,6 @@ import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
 import android.view.View;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 
 import com.socks.library.KLog;
@@ -45,7 +44,7 @@ import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
 
-    @Bind(R.id.main_drawerlayout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
     @Bind(R.id.coordinatorlayout)
@@ -61,7 +60,7 @@ public class MainActivity extends BaseActivity {
     @Bind(R.id.fab)
     FloatingActionButton fab;
 
-    @Bind(R.id.main_navigationview)
+    @Bind(R.id.navigation_view)
     NavigationView mNavigationView;
 
     @Bind(R.id.relayout)
@@ -82,9 +81,7 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setStatusBar() {
-        int color = getResources().getColor(R.color.colorPrimary);
-//        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.main_drawerlayout), color, 0);
-        StatusBarUtil.setColorForDrawerLayout(this,(DrawerLayout) findViewById(R.id.main_drawerlayout),colorPrimary,0);
+        StatusBarUtil.setColorForDrawerLayout(this,(DrawerLayout) findViewById(R.id.drawer_layout),colorPrimary,0);
     }
 
     @Override
@@ -94,12 +91,12 @@ public class MainActivity extends BaseActivity {
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-        //填充侧边栏头部
-        mNavigationView.inflateHeaderView(R.layout.main_drawer_header);
-        //填充侧边栏菜单
-        mNavigationView.inflateMenu(R.menu.menu_nav);
+//        //填充侧边栏头部
+//        mNavigationView.inflateHeaderView(R.layout.main_drawer_header);
+//        //填充侧边栏菜单
+//        mNavigationView.inflateMenu(R.menu.menu_nav);
 
-        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
+//        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -229,32 +226,41 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.main, menu);
+//        getMenuInflater().inflate(R.menu.main, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        switch (itemId) {
-
-            case R.id.action_day_night_mode:
-                PreferenceUtil preferenceUtil = new PreferenceUtil(MainActivity.this);
-                boolean isNightMode = preferenceUtil.getBoolean(Contant.DAY_NIGHT_MODE);
-                if (isNightMode) {
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-                } else {
-                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-                }
-//                KLog.w("夜间模式",isNight);
-                isNightMode = !isNightMode;
-                preferenceUtil.saveBoolean(Contant.DAY_NIGHT_MODE, isNightMode);
-                recreate();
-                return true;
-            default:
-                break;
-        }
+//        int itemId = item.getItemId();
+//        switch (itemId) {
+//
+//            case R.id.action_day_night_mode:
+//                PreferenceUtil preferenceUtil = new PreferenceUtil(MainActivity.this);
+//                boolean isNightMode = preferenceUtil.getBoolean(Contant.DAY_NIGHT_MODE);
+//                if (isNightMode) {
+//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+//                } else {
+//                    getDelegate().setLocalNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+//                }
+////                KLog.w("夜间模式",isNight);
+//                isNightMode = !isNightMode;
+//                preferenceUtil.saveBoolean(Contant.DAY_NIGHT_MODE, isNightMode);
+//                recreate();
+//                return true;
+//            default:
+//                break;
+//        }
 
         return super.onOptionsItemSelected(item);
+    }
+
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+//        mHasDrawLayout=true;
+        defaultCheckedItem=R.id.nav_home;
+        onNavigationViewItemChecked();
     }
 }

@@ -90,10 +90,6 @@
         <activity
             android:name=".module.category.ui.CategoryActivity"
             android:launchMode="singleTask" />
-        <activity
-            android:name=".module.category.ui.TestDrawActivity"
-            android:label="@string/title_activity_test_draw"
-            android:theme="@style/AppTheme"></activity>
     </application>
 
 </manifest>

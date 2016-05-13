@@ -1,28 +1,21 @@
 package com.ybh.lovemeizi.module;
 
-import android.app.Activity;
 import android.content.Intent;
-import android.os.Build;
 import android.support.annotation.LayoutRes;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
 import android.view.View;
-import android.view.WindowManager;
 import android.widget.Toast;
 
 
-import com.bumptech.glide.Glide;
-import com.squareup.picasso.Picasso;
 import com.umeng.analytics.MobclickAgent;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.YApp;
 import com.ybh.lovemeizi.module.category.ui.CategoryActivity;
-import com.ybh.lovemeizi.module.category.ui.TestDrawActivity;
 import com.ybh.lovemeizi.module.home.ui.MainActivity;
 import com.ybh.lovemeizi.utils.StatusBarUtil;
 
@@ -43,6 +36,10 @@ public abstract class BaseActivity extends AppCompatActivity {
     private CompositeSubscription compositeSubscription;
     private Class mClass;
     protected int colorPrimary;
+    protected boolean mHasDrawLayout; //是否有侧边栏
+    protected int defaultCheckedItem; //默认选中的菜单
+    private DrawerLayout mDrawerLayout;
+    private NavigationView mNavigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,17 +52,18 @@ public abstract class BaseActivity extends AppCompatActivity {
 //                mHeaderView.setImageResource(R.mipmap.header);
 //            }
         }
-//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
-//            getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
-//        }
         initToolbar();
         initView();
+//        if (mHasDrawLayout){
+//            onNavigationViewItemChecked();
+//        }
         initData();
     }
 
     @Override
     public void setContentView(@LayoutRes int layoutResID) {
         super.setContentView(layoutResID);
+        colorPrimary = getResources().getColor(R.color.colorPrimary);
         setStatusBar();
     }
 
@@ -73,8 +71,6 @@ public abstract class BaseActivity extends AppCompatActivity {
      * 与状态栏有关的设置
      */
     protected void setStatusBar() {
-        colorPrimary = getResources().getColor(R.color.colorPrimary);
-//        StatusBarUtil.setTransparent(this);
         StatusBarUtil.setColor(this,colorPrimary,0);
     }
 
@@ -145,16 +141,20 @@ public abstract class BaseActivity extends AppCompatActivity {
 
     /**
      * 侧边栏选项
-     *
-     * @param mNavigationView
      */
-    protected void onNavigationViewItemChecked(NavigationView mNavigationView, final DrawerLayout mDrawerLayout) {
+    protected void onNavigationViewItemChecked() {
+        mDrawerLayout = (DrawerLayout) findViewById(R.id.drawer_layout);
+        mNavigationView = (NavigationView) findViewById(R.id.navigation_view);
+
+        mNavigationView.setCheckedItem(defaultCheckedItem);
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
-//                int itemId = item.getItemId();
-                Intent intent = null;
-                switch (item.getItemId()) {
+                if (item.isChecked()){
+                    return true;
+                }
+                int itemId = item.getItemId();
+                switch (itemId) {
                     case R.id.nav_home:
                         Toast.makeText(BaseActivity.this, "home", Toast.LENGTH_SHORT).show();
                         mClass = MainActivity.class;
@@ -166,7 +166,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                     case R.id.nav_setting:
                         Toast.makeText(BaseActivity.this, "设置", Toast.LENGTH_SHORT).show();
 //                        intent=new Intent(YApp.yContext, MainActivity.class);
-                        mClass = TestDrawActivity.class;
+//                        mClass = TestDrawActivity.class;
                         break;
                     case R.id.nav_about:
                         Toast.makeText(BaseActivity.this, "关于", Toast.LENGTH_SHORT).show();
@@ -176,6 +176,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                         break;
 
                 }
+
 
 //                item.setChecked(true);
                 mDrawerLayout.closeDrawers();
@@ -193,6 +194,13 @@ public abstract class BaseActivity extends AppCompatActivity {
             }
         });
 
+        mNavigationView.post(new Runnable() {
+            @Override
+            public void run() {
+                CircleImageView avaImg = (CircleImageView) findViewById(R.id.drawer_header_img);
+                avaImg.setImageResource(R.mipmap.header);
+            }
+        });
 
     }
 

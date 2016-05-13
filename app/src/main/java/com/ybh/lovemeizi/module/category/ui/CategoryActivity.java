@@ -9,26 +9,18 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.view.View;
 
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.http.ApiServiceFactory;
-import com.ybh.lovemeizi.http.zhihu.KanZhihuApi;
-import com.ybh.lovemeizi.model.kanzhihu.KanzhihuAll;
-import com.ybh.lovemeizi.model.kanzhihu.KanzhihuBean;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.BaseFragment;
 import com.ybh.lovemeizi.module.category.adapter.YViewPagerAdapter;
 import com.ybh.lovemeizi.utils.StatusBarUtil;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import butterknife.Bind;
-import rx.Observer;
-import rx.android.schedulers.AndroidSchedulers;
-import rx.functions.Func1;
 
 public class CategoryActivity extends BaseActivity {
 
-    @Bind(R.id.drawerlayout)
+    @Bind(R.id.drawer_layout)
     DrawerLayout mDrawerLayout;
 
     @Bind(R.id.tablayout)
@@ -37,7 +29,7 @@ public class CategoryActivity extends BaseActivity {
     @Bind(R.id.category_viewpage)
     ViewPager mViewPager;
 
-    @Bind(R.id.main_navigationview)
+    @Bind(R.id.navigation_view)
     NavigationView mNavigationView;
 
     private ArrayList<BaseFragment> yFragments;
@@ -51,8 +43,7 @@ public class CategoryActivity extends BaseActivity {
 
     @Override
     protected void setStatusBar() {
-        int color = getResources().getColor(R.color.colorPrimary);
-        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.drawerlayout), color, 0);
+        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.drawer_layout), colorPrimary, 0);
     }
 
     @Override
@@ -62,12 +53,11 @@ public class CategoryActivity extends BaseActivity {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
-        //填充侧边栏头部
-        mNavigationView.inflateHeaderView(R.layout.main_drawer_header);
-        //填充侧边栏菜单
-        mNavigationView.inflateMenu(R.menu.menu_nav);
-        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
-        StatusBarUtil.setTranslucent(this);
+//        //填充侧边栏头部
+//        mNavigationView.inflateHeaderView(R.layout.main_drawer_header);
+//        //填充侧边栏菜单
+//        mNavigationView.inflateMenu(R.menu.menu_nav);
+//        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
     }
 
     @Override
@@ -95,6 +85,10 @@ public class CategoryActivity extends BaseActivity {
         mTabLayout.setTabMode(TabLayout.MODE_FIXED);
     }
 
-
-
+    @Override
+    protected void onResume() {
+        super.onResume();
+        defaultCheckedItem=R.id.nav_category;
+        onNavigationViewItemChecked();
+    }
 }
