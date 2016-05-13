@@ -1,12 +1,15 @@
 package com.ybh.lovemeizi.module.category.ui;
 
 
+import android.graphics.Canvas;
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.StaggeredGridLayoutManager;
+import android.view.View;
 
 import com.socks.library.KLog;
 import com.ybh.lovemeizi.R;

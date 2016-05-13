@@ -90,6 +90,10 @@
         <activity
             android:name=".module.category.ui.CategoryActivity"
             android:launchMode="singleTask" />
+        <activity
+            android:name=".module.AboutActivity"
+            android:launchMode="singleTop"
+            android:theme="@style/AppTheme.SlidrTheme" />
     </application>
 
 </manifest>

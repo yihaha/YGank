@@ -1,11 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/meitu_item_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/item_color"
-
-    >
+    app:cardPreventCornerOverlap="true">
+    <!--android:layout_marginBottom="4dp"-->
+    <!--android:layout_marginLeft="2dp"-->
+    <!--android:layout_marginRight="2dp"-->
+    <!--app:cardCornerRadius="3dp"-->
 
     <RelativeLayout
         android:layout_width="match_parent"
@@ -16,8 +20,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-             />
+            android:scaleType="centerCrop" />
 
         <TextView
             android:id="@+id/fr_meitu_date"

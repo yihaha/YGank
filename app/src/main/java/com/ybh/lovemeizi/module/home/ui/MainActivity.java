@@ -5,7 +5,6 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
-import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -49,10 +48,6 @@ public class MainActivity extends BaseActivity {
 
     @Bind(R.id.coordinatorlayout)
     CoordinatorLayout mCoordinatorLayout;
-
-//    @Bind(R.id.appbarlayout)
-//    AppBarLayout mAppBarLayout;
-
 
     @Bind(R.id.meizi_listview)
     RecyclerView mRecycleView;

@@ -41,7 +41,11 @@ public class MeituAdapter extends YBaseLoadingAdapter<GankData> {
     public void onBindNormalViewHolder(RecyclerView.ViewHolder viewHolder, int position) {
         MeiziHolder meiziHolder= (MeiziHolder) viewHolder;
         GankData gankData = mList.get(position);
-        Glide.with(meiziHolder.mImg.getContext()).load(gankData.url).into(meiziHolder.mImg);
+        Glide.with(meiziHolder.mImg.getContext())
+                .load(gankData.url)
+                .placeholder(R.mipmap.defaultmeizi)
+                .dontAnimate()
+                .into(meiziHolder.mImg);
         meiziHolder.mImgDate.setText(DateUtil.onDate2String(gankData.publishedAt));
     }
 

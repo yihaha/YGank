@@ -36,7 +36,6 @@ public abstract class BaseActivity extends AppCompatActivity {
     private CompositeSubscription compositeSubscription;
     private Class mClass;
     protected int colorPrimary;
-    protected boolean mHasDrawLayout; //是否有侧边栏
     protected int defaultCheckedItem; //默认选中的菜单
     private DrawerLayout mDrawerLayout;
     private NavigationView mNavigationView;
@@ -150,27 +149,30 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationView.setNavigationItemSelectedListener(new NavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(MenuItem item) {
+                mDrawerLayout.closeDrawers();
                 if (item.isChecked()){
                     return true;
                 }
                 int itemId = item.getItemId();
                 switch (itemId) {
                     case R.id.nav_home:
-                        Toast.makeText(BaseActivity.this, "home", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(BaseActivity.this, "home", Toast.LENGTH_SHORT).show();
                         mClass = MainActivity.class;
                         break;
                     case R.id.nav_category:
-                        Toast.makeText(BaseActivity.this, "分类", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(BaseActivity.this, "分类", Toast.LENGTH_SHORT).show();
                         mClass = CategoryActivity.class;
                         break;
                     case R.id.nav_setting:
-                        Toast.makeText(BaseActivity.this, "设置", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(BaseActivity.this, "待开发", Toast.LENGTH_SHORT).show();
 //                        intent=new Intent(YApp.yContext, MainActivity.class);
-//                        mClass = TestDrawActivity.class;
-                        break;
+//                        mClass = ScrollingActivity.class;
+                        return false;
+//                        break;
                     case R.id.nav_about:
-                        Toast.makeText(BaseActivity.this, "关于", Toast.LENGTH_SHORT).show();
+//                        Toast.makeText(BaseActivity.this, "关于", Toast.LENGTH_SHORT).show();
 //                        intent=new Intent(YApp.yContext, MainActivity.class);
+                        mClass = AboutActivity.class;
                         break;
                     default:
                         break;
@@ -178,8 +180,7 @@ public abstract class BaseActivity extends AppCompatActivity {
                 }
 
 
-//                item.setChecked(true);
-                mDrawerLayout.closeDrawers();
+//                mDrawerLayout.closeDrawers();
 //                startActivity(intent); //有些卡顿
                 if (mClass != null) {
                     mDrawerLayout.postDelayed(new Runnable() {
@@ -197,7 +198,7 @@ public abstract class BaseActivity extends AppCompatActivity {
         mNavigationView.post(new Runnable() {
             @Override
             public void run() {
-                CircleImageView avaImg = (CircleImageView) findViewById(R.id.drawer_header_img);
+                CircleImageView avaImg = (CircleImageView) BaseActivity.this.findViewById(R.id.drawer_header_img);
                 avaImg.setImageResource(R.mipmap.header);
             }
         });

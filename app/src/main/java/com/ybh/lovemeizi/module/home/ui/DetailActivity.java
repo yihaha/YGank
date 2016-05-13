@@ -1,7 +1,12 @@
 package com.ybh.lovemeizi.module.home.ui;
 
 import android.content.Intent;
+import android.os.Bundle;
+import android.os.Handler;
+import android.support.annotation.Nullable;
+import android.support.design.widget.AppBarLayout;
 import android.support.design.widget.CollapsingToolbarLayout;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
@@ -37,6 +42,9 @@ import rx.schedulers.Schedulers;
 
 public class DetailActivity extends BaseActivity {
 
+    @Bind(R.id.swipelayout)
+    SwipeRefreshLayout mSwiRefreshLayout;
+
     @Bind(R.id.detail_recycleview)
     RecyclerView mRecycleView;
 
@@ -44,11 +52,17 @@ public class DetailActivity extends BaseActivity {
     @Bind(R.id.collbarlayout)
     CollapsingToolbarLayout mCollBarLayout;
 
+    @Bind(R.id.appbarlayout1)
+    AppBarLayout mAppbarlayout1;
+
     @Bind(R.id.video_bg_img)
     ImageView mVideoImg;
     private GankRetrofitService gankService;
     private List<GankData> mGankDatas;
     private DetailAdapter detailAdapter;
+    private String mYear;
+    private String mMonth;
+    private String mDay;
 
     @Override
     public int getContentViewId() {
@@ -64,6 +78,46 @@ public class DetailActivity extends BaseActivity {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this);
         mRecycleView.setLayoutManager(linearLayoutManager);
         mRecycleView.setAdapter(detailAdapter);
+        mSwiRefreshLayout.setColorSchemeResources(R.color.md_black_1000);
+        mSwiRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                loadData(mYear, mMonth, mDay);
+            }
+        });
+        mAppbarlayout1.addOnOffsetChangedListener(new AppBarLayout.OnOffsetChangedListener() {
+            @Override
+            public void onOffsetChanged(AppBarLayout appBarLayout, int verticalOffset) {
+                KLog.w("verticalOffset**"+verticalOffset);
+                if (verticalOffset>=0){
+                    mSwiRefreshLayout.setEnabled(true);
+                }else {
+                    mSwiRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+
+        mCollBarLayout.addOnLayoutChangeListener(new View.OnLayoutChangeListener() {
+            @Override
+            public void onLayoutChange(View v, int left, int top, int right, int bottom, int oldLeft, int oldTop, int oldRight, int oldBottom) {
+                if (bottom-oldBottom>=360){
+                    mSwiRefreshLayout.setEnabled(true);
+                }else {
+                    mSwiRefreshLayout.setEnabled(false);
+                }
+            }
+        });
+    }
+
+    @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                setRefresh(true);
+            }
+        },300);
     }
 
     @Override
@@ -74,7 +128,11 @@ public class DetailActivity extends BaseActivity {
         Date time = new Date(Long.parseLong(date));
         //设置标题
         setActivityTitle(DateUtil.onDate2String(time, "yyyy/MM/dd"), true);
-        loadData(DateUtil.onDate2String(time, "yyyy"), DateUtil.onDate2String(time, "MM"), DateUtil.onDate2String(time, "dd"));
+        mYear = DateUtil.onDate2String(time, "yyyy");
+        mMonth = DateUtil.onDate2String(time, "MM");
+        mDay = DateUtil.onDate2String(time, "dd");
+
+        loadData(mYear, mMonth, mDay);
         mCollBarLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -95,6 +153,10 @@ public class DetailActivity extends BaseActivity {
                     //将数据进行转换,得到各个分类的数据,添加到同一个集合中
                     @Override
                     public List<GankData> call(TodayDataBean todayDataBean) {
+                        //清除就数据
+                        if (mGankDatas.size()>0){
+                            mGankDatas.clear();
+                        }
                         return getDataList(todayDataBean.results);
                     }
                 })
@@ -109,11 +171,13 @@ public class DetailActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         KLog.w("onError", e + "");
+                        setRefresh(false);
                     }
 
                     @Override
                     public void onNext(List<GankData> gankDatas) {
 //                        mGankDatas.addAll(gankDatas);
+                        setRefresh(false);
                         detailAdapter.notifyDataSetChanged();
                     }
                 });
@@ -159,6 +223,26 @@ public class DetailActivity extends BaseActivity {
                     , gankData.type, gankData.desc, Platform.SHARE_VIDEO);
         } else {
             ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
+        }
+    }
+
+    /**
+     * 刷新
+     * @param tag
+     */
+    public void setRefresh(boolean tag){
+        if (mSwiRefreshLayout!=null){
+            if (!tag){
+                //刷新消失不会太快
+                mSwiRefreshLayout.postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        mSwiRefreshLayout.setRefreshing(false);
+                    }
+                },1500);
+            }else {
+                mSwiRefreshLayout.setRefreshing(true);
+            }
         }
     }
 
