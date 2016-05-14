@@ -11,6 +11,7 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import com.bumptech.glide.Glide;
 import com.ybh.lovemeizi.R;
 
 /**
@@ -70,7 +71,7 @@ public class YBottomSheetDialogView {
 
         @Override
         public void onBindViewHolder(ViewHolder holder, final int position) {
-            holder.shareImg.setImageResource(shareImgs[position]);
+            Glide.with(holder.shareImg.getContext()).load(shareImgs[position]).into(holder.shareImg);
             holder.shareName.setText(shareNames[position]);
             holder.shareImg.setOnClickListener(new View.OnClickListener() {
                 @Override
