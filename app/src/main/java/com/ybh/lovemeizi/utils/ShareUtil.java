@@ -21,95 +21,116 @@ public class ShareUtil {
 
     /**
      * 利用mob.com的集成分享
+     *
      * @param context
-     * @param url  网址
+     * @param url       网址
      * @param shTitle
      * @param shContent
      * @param shType
      */
-    public static void sdkShare(final Context context, final String url, final String shTitle, final String shContent, final int shType){
-            ShareSDK.initSDK(context);
-            PreferenceUtil preferenceUtil = new PreferenceUtil(context);
-            boolean isNightMode = preferenceUtil.getBoolean(Contant.DAY_NIGHT_MODE);
-            final YBottomSheetDialogView shareDialog = new YBottomSheetDialogView(context, isNightMode == true ? AppCompatDelegate.MODE_NIGHT_YES : AppCompatDelegate.MODE_NIGHT_NO);
+    public static void sdkShare(final Context context, final String url, final String shTitle, final String shContent, final int shType) {
+        ShareSDK.initSDK(context);
+        final YBottomSheetDialogView shareDialog = new YBottomSheetDialogView(context);
 
-            shareDialog.bottomClickCallback(new YBottomSheetDialogView.BottomClickListener() {
-                @Override
-                public void cancleShare() {
-                    shareDialog.dismissDialog();
-                }
+        shareDialog.bottomClickCallback(new YBottomSheetDialogView.BottomClickListener() {
+            @Override
+            public void cancleShare() {
+                shareDialog.dismissDialog();
+            }
 
-                @Override
-                public void onItemcListener(String item) {
-                    Platform.ShareParams sp = new Platform.ShareParams();
-                    sp.setTitle(shTitle);  //分享标题
-                    sp.setTitleUrl(url);  //网友点进链接后，可以看到分享的详情
-                    sp.setText(shContent);   //分享文本
-                    sp.setImageUrl(url);//网络图片rul
+            @Override
+            public void onItemcListener(String item) {
+                String testUrl = "http://f1.sharesdk.cn/imgs/2014/02/26/owWpLZo_638x960.jpg";
+                Platform.ShareParams sp = new Platform.ShareParams();
+                sp.setShareType(shType);                                              //非常重要：一定要设置分享属性
+                switch (item) {
+                    case "微信":
+                        sp.setTitle(shTitle);
+                        sp.setText(shContent);
+                        if (shType == Platform.SHARE_WEBPAGE) {
+                            sp.setImageUrl(testUrl);
+                            sp.setUrl(url);
+                        } else if (shType == Platform.SHARE_IMAGE) {
+                            sp.setImageUrl(url);
+                        }
+                        //获取平台对象
+                        Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
+                        // 执行分享
+                        wechat.share(sp);
+                        break;
+                    case "朋友圈":
+                        sp.setTitle(shTitle);
+                        sp.setText(shContent);
+//                        //当前项目中故意调的和上面不同,工具实际效果来
+//                        sp.setTitle(shContent);
+//                        sp.setText(shTitle); //显示详细内容
+                        if (shType == Platform.SHARE_WEBPAGE) {
+                            sp.setImageUrl(testUrl);
+                            sp.setUrl(url);
+                        } else if (shType == Platform.SHARE_IMAGE) {
+                            sp.setImageUrl(url);
+                        }
+                        Platform wechatMoment = ShareSDK.getPlatform(WechatMoments.NAME);
+                        // 执行分享
+                        wechatMoment.share(sp);
+                        break;
 
+                    case "QQ":
 
-//                    sp.setImagePath(url);
-                    sp.setUrl(url);   //网友点进链接后，可以看到分享的详情
-                    sp.setShareType(shType);//非常重要：一定要设置分享属性
-                    switch (item) {
-                        case "微信":
-                            //3、非常重要：获取平台对象
-                            Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-//                            wechat.SSOSetting(false);
-//                            wechat.setPlatformActionListener(new ); // 设置分享事件回调
-                            // 执行分享
-                            wechat.share(sp);
-                            break;
-                        case "朋友圈":
+                        if (shType == Platform.SHARE_WEBPAGE) {
+                            sp.setTitle(shTitle);
+                            sp.setTitleUrl(url);
+                            sp.setText(shContent);
+                            sp.setImageUrl(testUrl);
+                        } else if (shType == Platform.SHARE_IMAGE) {
+                            sp.setImageUrl(url);
+                        }
 
-                            //3、非常重要：获取平台对象
-                            Platform wechatMoment = ShareSDK.getPlatform(WechatMoments.NAME);
-//                            wechatMoment.setPlatformActionListener(); // 设置分享事件回调
-                            // 执行分享
-                            wechatMoment.share(sp);
-                            break;
+                        Platform qqchat = ShareSDK.getPlatform(QQ.NAME);
+                        // 执行分享
+                        qqchat.share(sp);
+                        break;
 
-                        case "QQ":
+                    case "QQ空间":
 
-//                        sp.setShareType(Platform.SHARE_WEBPAGE);//非常重要：一定要设置分享属性
-//                        sp.setTitle("分享图片");  //分享标题
-//                        sp.setText("图片文本");   //分享文本
-//                        sp.setImageUrl(imgUrl);//网络图片rul
-//                        sp.setUrl(myAppUrl);   //网友点进链接后，可以看到分享的详情
+                        sp.setTitle(shTitle);
+                        sp.setTitleUrl(url);
+                        sp.setText(shContent);
+                        sp.setSite(shTitle);
+                        sp.setSiteUrl(url);
+                        if (shType == Platform.SHARE_WEBPAGE) {
+                            sp.setImageUrl(testUrl);
+                        } else if (shType == Platform.SHARE_IMAGE) {
+                            sp.setImageUrl(url);
+                        }
 
-                            //3、非常重要：获取平台对象
-                            Platform qqchat = ShareSDK.getPlatform(QQ.NAME);
-//                            qqchat.setPlatformActionListener(); // 设置分享事件回调
-                            // 执行分享
-                            qqchat.share(sp);
-                            break;
-
-                        case "QQ空间":
-                            //QQ空间
-                            sp.setSite(shTitle);
-                            sp.setSiteUrl(url);
-                            //3、非常重要：获取平台对象
-                            Platform qqZonechat = ShareSDK.getPlatform(QZone.NAME);
-//                            qqZonechat.setPlatformActionListener(); // 设置分享事件回调
-                            // 执行分享
-                            qqZonechat.share(sp);
-                            break;
-                        case "新浪微博":
-
-                            //3、非常重要：获取平台对象
-                            Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
+                        Platform qqZonechat = ShareSDK.getPlatform(QZone.NAME);
+                        // 执行分享
+                        qqZonechat.share(sp);
+                        break;
+                    case "新浪微博":
+                        sp.setText(shContent);                                                  //分享文本
+                        if (shType == Platform.SHARE_WEBPAGE) {
+                            sp.setUrl(url);
+                            sp.setImageUrl(testUrl);
+                        } else if (shType == Platform.SHARE_IMAGE) {
+                            sp.setText(shTitle);
+                            sp.setImageUrl(url);
+                        }
+                        //3、非常重要：获取平台对象
+                        Platform sinaWeibo = ShareSDK.getPlatform(SinaWeibo.NAME);
 //                            sinaWeibo.setPlatformActionListener(); // 设置分享事件回调
-                            // 执行分享
-                            sinaWeibo.share(sp);
-                            break;
+                        // 执行分享
+                        sinaWeibo.share(sp);
+                        break;
 
-                        default:
-                            break;
+                    default:
+                        break;
 
-                    }
-                    shareDialog.dismissDialog();
                 }
-            });
+                shareDialog.dismissDialog();
+            }
+        });
 
     }
 

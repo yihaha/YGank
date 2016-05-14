@@ -12,8 +12,8 @@ android {
         applicationId "com.ybh.lovemeizi"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 3
-        versionName "2.1"
+        versionCode 4
+        versionName "2.2"
     }
 
     signingConfigs {
@@ -151,7 +151,6 @@ dependencies {
     //    compile 'in.srain.cube:ultra-ptr:1.0.11'
     //    compile 'com.chanven.lib:cptr:1.0.0'
 //        compile 'com.github.chrisbanes.photoview:library:1.2.3'
-        compile 'com.commit451:PhotoView:1.2.4'
     //    compile 'com.bm.photoview:library:1.4.0'
     /** ************************************/
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'
@@ -160,6 +159,7 @@ dependencies {
     //加载图片
     compile 'com.github.bumptech.glide:glide:3.7.0'
     compile 'com.squareup.picasso:picasso:2.5.2'
+    compile 'com.commit451:PhotoView:1.2.4'
     //友盟统计
     compile 'com.umeng.analytics:analytics:latest.integration'
     //圆图

@@ -220,7 +220,7 @@ public class DetailActivity extends BaseActivity {
         if (mGankDatas.size() > 0) {
             GankData gankData = mGankDatas.get(0);
             ShareUtil.sdkShare(DetailActivity.this, gankData.url
-                    , gankData.type, gankData.desc, Platform.SHARE_VIDEO);
+                    , gankData.type, gankData.desc, Platform.SHARE_WEBPAGE);
         } else {
             ToastSnackUtil.snackbarShort(mCollBarLayout, "请数据加载完成再试");
         }
@@ -237,7 +237,9 @@ public class DetailActivity extends BaseActivity {
                 mSwiRefreshLayout.postDelayed(new Runnable() {
                     @Override
                     public void run() {
-                        mSwiRefreshLayout.setRefreshing(false);
+                        if (mSwiRefreshLayout!=null) { //不做判null,可能会崩溃
+                            mSwiRefreshLayout.setRefreshing(false);
+                        }
                     }
                 },1500);
             }else {
