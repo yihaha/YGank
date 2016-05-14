@@ -139,11 +139,13 @@ public class WebActivity extends BaseActivity {
         @Override
         public void onProgressChanged(WebView view, int newProgress) {
             super.onProgressChanged(view, newProgress);
-            topProgressBar.setProgress(newProgress);
-            if (newProgress == 100) {
-                topProgressBar.setVisibility(View.GONE);
-            } else {
-                topProgressBar.setVisibility(View.VISIBLE);
+            if (topProgressBar!=null&&(newProgress>0&&newProgress<=100)) {
+                topProgressBar.setProgress(newProgress);
+                if (newProgress == 100) {
+                    topProgressBar.setVisibility(View.GONE);
+                } else {
+                    topProgressBar.setVisibility(View.VISIBLE);
+                }
             }
         }
     }

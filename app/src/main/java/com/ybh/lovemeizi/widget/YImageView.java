@@ -38,7 +38,7 @@ public class YImageView extends ImageView {
 //            height = (int) (Math.random() * (width/2) + width);
             height = (int) (width*1.5+0.5);
         }
-        KLog.w("YImage >>>  ",width);
+//        KLog.w("YImage >>>  ",width);
         setMeasuredDimension(width,height);
 //        super.onMeasure(widthMeasureSpec, heightMeasureSpec);
     }

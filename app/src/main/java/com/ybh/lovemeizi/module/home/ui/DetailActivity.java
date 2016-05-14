@@ -170,8 +170,8 @@ public class DetailActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
-                        KLog.w("onError", e + "");
                         setRefresh(false);
+                        KLog.w("onError", e + "");
                     }
 
                     @Override

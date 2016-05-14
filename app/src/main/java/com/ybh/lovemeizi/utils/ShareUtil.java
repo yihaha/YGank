@@ -43,16 +43,19 @@ public class ShareUtil {
                 public void onItemcListener(String item) {
                     Platform.ShareParams sp = new Platform.ShareParams();
                     sp.setTitle(shTitle);  //分享标题
+                    sp.setTitleUrl(url);  //网友点进链接后，可以看到分享的详情
                     sp.setText(shContent);   //分享文本
                     sp.setImageUrl(url);//网络图片rul
-                    sp.setTitleUrl(url);  //网友点进链接后，可以看到分享的详情
+
+
+//                    sp.setImagePath(url);
                     sp.setUrl(url);   //网友点进链接后，可以看到分享的详情
                     sp.setShareType(shType);//非常重要：一定要设置分享属性
                     switch (item) {
                         case "微信":
                             //3、非常重要：获取平台对象
                             Platform wechat = ShareSDK.getPlatform(Wechat.NAME);
-                            wechat.SSOSetting(false);
+//                            wechat.SSOSetting(false);
 //                            wechat.setPlatformActionListener(new ); // 设置分享事件回调
                             // 执行分享
                             wechat.share(sp);
@@ -82,7 +85,9 @@ public class ShareUtil {
                             break;
 
                         case "QQ空间":
-
+                            //QQ空间
+                            sp.setSite(shTitle);
+                            sp.setSiteUrl(url);
                             //3、非常重要：获取平台对象
                             Platform qqZonechat = ShareSDK.getPlatform(QZone.NAME);
 //                            qqZonechat.setPlatformActionListener(); // 设置分享事件回调

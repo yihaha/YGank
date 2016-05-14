@@ -43,6 +43,7 @@ public class ZhihuFragment extends BaseFragment {
     private long dateLimit = 24 * 60 * 60 * 1000; //一天的时间
     private List<KanzhihuBean> mZhihuList;
     private ZhihuAdapter mAdapter;
+    private boolean isChange; //请求某一天的数据可能不存在,不存在时就将这个参数设置为true,在下拉刷新时,不再将currPage=1;
 
     @Override
     protected int setContentLayout() {
@@ -64,7 +65,9 @@ public class ZhihuFragment extends BaseFragment {
         mSwiRefreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                currPage = 1;
+//                if (!isChange) {
+                    currPage = 1;
+//                }
                 loadData(currPage);
             }
         });
@@ -81,7 +84,12 @@ public class ZhihuFragment extends BaseFragment {
 
     private void loadData(final int page, String... type) {
         //通过计算得到今天,昨天等的数据
-        long time = new Date().getTime() - (page - 1) * dateLimit;
+//        long time = new Date().getTime() - (page - 1) * dateLimit;
+        /**在0~1点经过测试获取不到数据(可能只是恰好赶上了-.-),可能是后台数据没更新,为了尽量保证有数据
+         * ,而不去处理没数据(稍微麻烦,如果是在公司开发中可根据实际情况来处理)的情况
+         * ,这里多延迟10个小时
+         * */
+        long time = new Date().getTime() - (page - 1) * dateLimit-10*60*60*1000;
         Date date = new Date(time);
 //        昨日最新（yesterday）、近日热门（recent）和历史精华（archive）
         if ((type == null) || (!(type.length > 0))) {
@@ -92,7 +100,13 @@ public class ZhihuFragment extends BaseFragment {
                 .map(new Func1<KanzhihuAll, List<KanzhihuBean>>() {
                     @Override
                     public List<KanzhihuBean> call(KanzhihuAll kanzhihuAll) {
-                        return kanzhihuAll.zhuhuAllList;
+//                        if ("no result".equals(kanzhihuAll.error)) {
+//                            isChange = true;
+//                            currPage++;
+//                            return null;
+//                        } else {
+                            return kanzhihuAll.zhuhuAllList;
+//                        }
                     }
                 })
                 .observeOn(AndroidSchedulers.mainThread())
@@ -105,14 +119,16 @@ public class ZhihuFragment extends BaseFragment {
 
                     @Override
                     public void onError(Throwable e) {
+                        e.printStackTrace();
                         setRefresh(false);
                         mAdapter.setLoadingComplete(); //取消加载布局
                         KLog.w(TAG, e.toString());
-                        ToastSnackUtil.snackbarLong(mRecycleView, TAG + "异常: " + e.toString());
+//                        ToastSnackUtil.snackbarLong(mRecycleView, TAG + "异常: " + e.toString());
                     }
 
                     @Override
                     public void onNext(final List<KanzhihuBean> kanzhihuBeen) {
+
                         KLog.w("zhifragment_next", "得到");
                         setRefresh(false);
 
@@ -120,13 +136,16 @@ public class ZhihuFragment extends BaseFragment {
                             @Override
                             public void run() {
                                 mAdapter.setLoadingComplete(); //取消加载布局
-                                //将旧数据清除
-                                if (page == 1 && mZhihuList.size() > 0) {
-                                    mZhihuList.clear();
-                                }
-                                mZhihuList.addAll(kanzhihuBeen);
+//                                if (kanzhihuBeen != null) {
+                                    //将旧数据清除
+                                    if (page == 1 && mZhihuList.size() > 0) {
+                                        mZhihuList.clear();
+                                    }
+                                    mZhihuList.addAll(kanzhihuBeen);
 //                        mAdapter.notifyItemRangeChanged(0, mZhihuList.size() - 1);
-                                mAdapter.notifyDataSetChanged();
+                                    mAdapter.notifyDataSetChanged();
+
+//                                }
                             }
                         }, 1500);
                     }

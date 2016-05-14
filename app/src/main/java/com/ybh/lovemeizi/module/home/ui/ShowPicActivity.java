@@ -32,6 +32,7 @@ import cn.sharesdk.framework.Platform;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
+import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ShowPicActivity extends BaseActivity {
     @Bind(R.id.show_meizi_img)
@@ -58,7 +59,6 @@ public class ShowPicActivity extends BaseActivity {
 //        ViewCompat.setTransitionName(mImg,MEIZI_IMG);
         // 默认开启侧滑，默认是整个页码侧滑
         mSlidrInterface = SlidrUtil.initSlidrDefaultConfig(this, true);
-
     }
 
     /**
@@ -75,8 +75,12 @@ public class ShowPicActivity extends BaseActivity {
         date = DateUtil.onDate2String(mGank.publishedAt, "yyyy/MM/dd");
         setActivityTitle(date, true);
 //        Glide.with(ShowPicActivity.this).load(imgUrl).into(mImg);
-        Picasso.with(this).load(imgUrl).into(mImg);
+        Picasso.with(this)
+                .load(imgUrl)
+                .into(mImg);
 
+//        PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(mImg);
+//        photoViewAttacher.update();
         mImg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {

@@ -25,16 +25,16 @@ android {
 
         debug {
             buildConfigField "boolean", "LOG_DEBUG", "true"
-            zipAlignEnabled true
-            shrinkResources true
+//            zipAlignEnabled true
+//            shrinkResources true
         }
 
         release {
             buildConfigField "boolean", "LOG_DEBUG", "false"
             //去除无用资源
-            shrinkResources true
+//            shrinkResources true
             minifyEnabled false //混淆
-            zipAlignEnabled true
+//            zipAlignEnabled true
             signingConfig signingConfigs.release
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -150,11 +150,8 @@ dependencies {
     //下拉刷新
     //    compile 'in.srain.cube:ultra-ptr:1.0.11'
     //    compile 'com.chanven.lib:cptr:1.0.0'
-    //    compile 'com.google.dagger:dagger:2.0.2'
-    //1.2.6这个版本不知道怎么缩小图片
-    //    compile 'com.github.chrisbanes:PhotoView:1.2.6'
-    //    compile 'com.github.chrisbanes.photoview:library:1.2.3'
-    //    compile 'com.commit451:PhotoView:1.2.4'
+//        compile 'com.github.chrisbanes.photoview:library:1.2.3'
+        compile 'com.commit451:PhotoView:1.2.4'
     //    compile 'com.bm.photoview:library:1.4.0'
     /** ************************************/
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'

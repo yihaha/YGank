@@ -165,10 +165,10 @@ public class MainActivity extends BaseActivity {
 
                     @Override
                     public void onError(Throwable e) {
+                        finishReorLoad();
 //                        mRefreshLayout.finishRefreshing();
                         KLog.w("onError", e + "");
-                        ToastSnackUtil.snackbarLong(mRefreshLayout, TAG + "异常: " + e.toString());
-                        finishReorLoad();
+//                        ToastSnackUtil.snackbarLong(mRefreshLayout, TAG + "异常: " + e.toString());
                     }
 
                     @Override
