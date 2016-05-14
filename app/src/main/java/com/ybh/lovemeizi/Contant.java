@@ -12,7 +12,6 @@ public class Contant {
     public static final  String Y_MONTH = "month";
     public static final  String Y_DAY = "day";
     public static final  String Y_DATE="ydate";
-    public static final  String Y_GANKDATA="ygankdata";
 
     /**分享用到的一些描述*/
     public static final  String SHARE_URL="share_url";

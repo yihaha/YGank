@@ -91,10 +91,13 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
                 @Override
                 public void onClick(View v) {
                     GankData gankData = mList.get(getLayoutPosition());
-                    Intent intent = new Intent(mActivity, ShowPicActivity.class);
-//                    intent.putExtra("imgUrl", gankData.url);
-//                    intent.putExtra("date",DateUtil.onDate2String(gankData.publishedAt,"yyyy/MM/dd"));
-                    intent.putExtra(Contant.Y_GANKDATA,gankData);
+                    if (gankData==null){
+                        return;
+                    }
+                    Intent intent = ShowPicActivity.newIntent(mActivity
+                            , gankData.url
+                            , gankData.type
+                            , DateUtil.onDate2String(gankData.publishedAt, "yyyy/MM/dd"));
                     mContext.startActivity(intent);
 
 //                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat

@@ -22,11 +22,13 @@ com.android.support:recyclerview-v7:23.2.1
  com.squareup.retrofit2:adapter-rxjava:2.0.1  
  com.google.code.gson:gson:2.6.2  
  com.jakewharton:butterknife:7.0.1  
+ com.commit451:PhotoView:1.2.4  
  de.hdodenhof:circleimageview:2.0.0  
  com.squareup.picasso:picasso:2.5.2  
  com.github.bumptech.glide:glide:3.7.0  
  com.github.zhaokaiqiang.klog:library:1.4.0  
- com.daimajia.numberprogressbar:library:1.2@aar
+ com.daimajia.numberprogressbar:library:1.2@aar  
+
 
 
 

@@ -26,7 +26,7 @@ public class YBottomSheetDialogView {
             , R.mipmap.ssdk_oks_classic_sinaweibo};
 
     private BottomClickListener bottomClickListener;
-    private final BottomSheetDialog bottomDialog;
+    private BottomSheetDialog bottomDialog = null;
 
     public YBottomSheetDialogView(Context context) {
         bottomDialog = new BottomSheetDialog(context);
@@ -36,7 +36,7 @@ public class YBottomSheetDialogView {
         view.findViewById(R.id.cancel_share).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (bottomClickListener!=null){
+                if (bottomClickListener != null) {
                     bottomClickListener.cancleShare();
                 }
             }
@@ -45,20 +45,21 @@ public class YBottomSheetDialogView {
         RecyclerView mRecyView = (RecyclerView) view.findViewById(R.id.srecyview);
         //水平滚动的RecycleView
 //        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(context, LinearLayoutManager.HORIZONTAL, false);
-        LinearLayoutManager linearLayoutManager = new GridLayoutManager(context,5,GridLayoutManager.VERTICAL,false);
+        LinearLayoutManager linearLayoutManager = new GridLayoutManager(context, 5, GridLayoutManager.VERTICAL, false);
         mRecyView.setLayoutManager(linearLayoutManager);
         mRecyView.setAdapter(new MyShareAdapter());
         bottomDialog.setContentView(view);
         bottomDialog.show();
     }
 
-    public interface BottomClickListener{
+    public interface BottomClickListener {
         void cancleShare();
-        void onItemcListener(String  item);
+
+        void onItemcListener(String item);
     }
 
-    public void bottomClickCallback(BottomClickListener bottomClickListener){
-        this.bottomClickListener=bottomClickListener;
+    public void bottomClickCallback(BottomClickListener bottomClickListener) {
+        this.bottomClickListener = bottomClickListener;
     }
 
     public class MyShareAdapter extends RecyclerView.Adapter<ViewHolder> {
@@ -76,7 +77,7 @@ public class YBottomSheetDialogView {
             holder.shareImg.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    if (bottomClickListener!=null){
+                    if (bottomClickListener != null) {
                         bottomClickListener.onItemcListener(shareNames[position]);
                     }
                 }
@@ -101,7 +102,10 @@ public class YBottomSheetDialogView {
         }
     }
 
-    public void dismissDialog(){
+    public void dismissDialog() {
         bottomDialog.dismiss();
+        if (bottomDialog != null) {
+            bottomDialog = null;
+        }
     }
 }

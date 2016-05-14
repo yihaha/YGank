@@ -56,6 +56,12 @@ android {
                     fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
+                // 删除unaligned apk
+                if (output.zipAlign != null) {
+                    output.zipAlign.doLast {
+                        output.zipAlign.inputFile.delete()
+                    }
+                }
             }
         }
 

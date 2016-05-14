@@ -25,7 +25,7 @@ import de.hdodenhof.circleimageview.CircleImageView;
 import rx.Subscription;
 import rx.subscriptions.CompositeSubscription;
 
-public abstract class BaseActivity extends AppCompatActivity {
+public  class BaseActivity extends AppCompatActivity {
 
     @Bind(R.id.toolbar)
     public Toolbar mToolbar;
@@ -80,9 +80,9 @@ public abstract class BaseActivity extends AppCompatActivity {
     }
 
 
-    public abstract void initView();
+    public  void initView(){};
 
-    public abstract void initData();
+    public  void initData(){};
 
     public int getContentViewId() {
         return 0;

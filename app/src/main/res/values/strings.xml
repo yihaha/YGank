@@ -39,7 +39,7 @@
                 com.github.bumptech.glide:glide:3.7.0\n
                 com.github.zhaokaiqiang.klog:library:1.4.0\n
                 com.daimajia.numberprogressbar:library:1.2@aar\n
-                compile 'com.commit451:PhotoView:1.2.4'
+                com.commit451:PhotoView:1.2.4
     </string>
 
     <string name="about_who">开发人员</string>

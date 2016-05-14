@@ -1,6 +1,8 @@
 package com.ybh.lovemeizi.module.home.ui;
 
 
+import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Environment;
 import android.support.design.widget.AppBarLayout;
@@ -12,9 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
-import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.DialogUtil;
 import com.ybh.lovemeizi.utils.ImgSaveUtil;
@@ -26,13 +26,13 @@ import com.ybh.lovemeizi.widget.YDialog;
 import com.ybh.lovemeizi.widget.slidr.model.SlidrInterface;
 
 import java.io.File;
+import java.util.Date;
 
 import butterknife.Bind;
 import cn.sharesdk.framework.Platform;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
-import uk.co.senab.photoview.PhotoViewAttacher;
 
 public class ShowPicActivity extends BaseActivity {
     @Bind(R.id.show_meizi_img)
@@ -46,13 +46,33 @@ public class ShowPicActivity extends BaseActivity {
 
     private String imgUrl;
     private String date;
-    private GankData mGank;
+    private String shTitle;
 
     @Override
     public int getContentViewId() {
         return R.layout.activity_show_pic;
     }
 
+    /**
+     *
+     * @param context
+     * @param url
+     * @param etc 可以传递标题,时间等(qq空间可能有用),很可能不显示,无所谓;标题和时间一起传递过来
+     * @return
+     */
+    public static Intent  newIntent(Context context,String url,String...etc ){
+        String title="图片";
+        String date=DateUtil.onDate2String(new Date());
+        if (etc!=null&&etc.length==2){
+            title=etc[0];
+            date=etc[1];
+        }
+        Intent intent = new Intent(context,ShowPicActivity.class);
+        intent.putExtra("imgUrl",url);
+        intent.putExtra("title",title);
+        intent.putExtra("date",date);
+        return intent;
+    }
 
     @Override
     public void initView() {
@@ -69,18 +89,17 @@ public class ShowPicActivity extends BaseActivity {
     @Override
     public void initData() {
 
-        mGank = (GankData) getIntent().getSerializableExtra(Contant.Y_GANKDATA);
+        Intent intent = getIntent();
+        this.imgUrl = intent.getStringExtra("imgUrl");
+        shTitle = intent.getStringExtra("title");
+        this.date = intent.getStringExtra("date");
 
-        imgUrl = mGank.url;
-        date = DateUtil.onDate2String(mGank.publishedAt, "yyyy/MM/dd");
-        setActivityTitle(date, true);
+        setActivityTitle(this.date, true);
 //        Glide.with(ShowPicActivity.this).load(imgUrl).into(mImg);
         Picasso.with(this)
-                .load(imgUrl)
+                .load(this.imgUrl)
                 .into(mImg);
 
-//        PhotoViewAttacher photoViewAttacher = new PhotoViewAttacher(mImg);
-//        photoViewAttacher.update();
         mImg.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
             public boolean onLongClick(View v) {
@@ -91,7 +110,7 @@ public class ShowPicActivity extends BaseActivity {
     }
 
     private void showShare(){
-        ShareUtil.sdkShare(ShowPicActivity.this, imgUrl, mGank.type, date,Platform.SHARE_IMAGE);
+        ShareUtil.sdkShare(ShowPicActivity.this, imgUrl, shTitle, date,Platform.SHARE_IMAGE);
     }
 
     @Override

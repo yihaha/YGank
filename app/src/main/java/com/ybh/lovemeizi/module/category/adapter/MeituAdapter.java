@@ -65,8 +65,11 @@ public class MeituAdapter extends YBaseLoadingAdapter<GankData> {
         @OnClick(R.id.meitu_item_layout)
         void toPicActivity(View view){
             GankData gankData = mList.get(getLayoutPosition());
-            Intent intent = new Intent(view.getContext(), ShowPicActivity.class);
-            intent.putExtra(Contant.Y_GANKDATA,gankData);
+            if (gankData==null) return;
+            Intent intent=ShowPicActivity.newIntent(view.getContext()
+                    ,gankData.url
+                    ,gankData.type
+                    ,DateUtil.onDate2String(gankData.publishedAt, "yyyy/MM/dd"));
             view.getContext().startActivity(intent);
         }
     }
