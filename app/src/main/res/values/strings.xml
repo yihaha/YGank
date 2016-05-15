@@ -39,7 +39,8 @@
                 com.github.bumptech.glide:glide:3.7.0\n
                 com.github.zhaokaiqiang.klog:library:1.4.0\n
                 com.daimajia.numberprogressbar:library:1.2@aar\n
-                com.commit451:PhotoView:1.2.4
+                com.commit451:PhotoView:1.2.4\n
+                org.jsoup:jsoup:1.9.1
     </string>
 
     <string name="about_who">开发人员</string>

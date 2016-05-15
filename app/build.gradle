@@ -12,8 +12,8 @@ android {
         applicationId "com.ybh.lovemeizi"
         minSdkVersion 19
         targetSdkVersion 23
-        versionCode 4
-        versionName "2.2"
+        versionCode 5
+        versionName "2.3"
     }
 
     signingConfigs {

@@ -28,6 +28,7 @@ com.android.support:recyclerview-v7:23.2.1
  com.github.bumptech.glide:glide:3.7.0  
  com.github.zhaokaiqiang.klog:library:1.4.0  
  com.daimajia.numberprogressbar:library:1.2@aar  
+ org.jsoup:jsoup:1.9.1  
 
 
 
