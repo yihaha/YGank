@@ -203,7 +203,7 @@ public class DetailActivity extends BaseActivity {
 
     private void showShare() {
         if (mGankDatas.size() > 0) {
-            GankData gankData = mGankDatas.get(0);
+            GankData gankData = mGankDatas.get(mGankDatas.size()-1);
             ShareUtil.sdkShare(DetailActivity.this, gankData.url
                     , gankData.type, gankData.desc, Platform.SHARE_WEBPAGE);
         } else {
