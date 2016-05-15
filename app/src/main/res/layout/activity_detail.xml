@@ -9,69 +9,70 @@
         android:id="@+id/top_toolbar"
         layout="@layout/ytoolbar" />
 
-    <android.support.v4.widget.SwipeRefreshLayout
-        android:id="@+id/swipelayout"
+    <!--<android.support.v4.widget.SwipeRefreshLayout-->
+    <!--android:id="@+id/swipelayout"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="match_parent"-->
+    <!--android:layout_below="@id/top_toolbar"-->
+    <!--app:layout_behavior="@string/appbar_scrolling_view_behavior">-->
+
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@id/top_toolbar"
-        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        android:layout_below="@id/top_toolbar">
 
 
-        <android.support.design.widget.CoordinatorLayout
+        <android.support.design.widget.AppBarLayout
+            android:id="@+id/appbarlayout1"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="180dp">
 
-
-            <android.support.design.widget.AppBarLayout
-                android:id="@+id/appbarlayout1"
-                android:layout_width="match_parent"
-                android:layout_height="180dp">
-
-                <android.support.design.widget.CollapsingToolbarLayout
-                    android:id="@+id/collbarlayout"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    app:contentScrim="?attr/colorPrimary"
-                    app:expandedTitleTextAppearance="@style/CollapsingToolbarTitleStyle"
-                    app:layout_scrollFlags="scroll|exitUntilCollapsed">
-
-                    <FrameLayout
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        app:layout_collapseMode="parallax">
-
-                        <ImageView
-                            android:id="@+id/video_bg_img"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:background="@color/video_bg"
-                            android:scaleType="centerCrop" />
-
-                        <ImageView
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_gravity="center"
-                            android:src="@mipmap/ic_play" />
-                    </FrameLayout>
-
-                    <!--<com.ybh.lovemeizi.widget.YCompatToolbar-->
-                    <!--android:layout_width="match_parent"-->
-                    <!--android:layout_height="?attr/actionBarSize"-->
-                    <!--app:layout_collapseMode="pin" />-->
-                </android.support.design.widget.CollapsingToolbarLayout>
-            </android.support.design.widget.AppBarLayout>
-
-            <android.support.v7.widget.RecyclerView
-                android:id="@+id/detail_recycleview"
+            <android.support.design.widget.CollapsingToolbarLayout
+                android:id="@+id/collbarlayout"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:clipToPadding="false"
-                android:paddingBottom="40dp"
-                app:layout_behavior="@string/appbar_scrolling_view_behavior" />
+                app:contentScrim="?attr/colorPrimary"
+                app:expandedTitleTextAppearance="@style/CollapsingToolbarTitleStyle"
+                app:layout_scrollFlags="scroll|exitUntilCollapsed">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    app:layout_collapseMode="parallax">
+
+                    <ImageView
+                        android:id="@+id/video_bg_img"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:background="@color/video_bg"
+                        android:scaleType="centerCrop" />
+
+                    <ImageView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:src="@mipmap/ic_play" />
+                </FrameLayout>
+
+                <!--<com.ybh.lovemeizi.widget.YCompatToolbar-->
+                <!--android:layout_width="match_parent"-->
+                <!--android:layout_height="?attr/actionBarSize"-->
+                <!--app:layout_collapseMode="pin" />-->
+            </android.support.design.widget.CollapsingToolbarLayout>
+        </android.support.design.widget.AppBarLayout>
+
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/detail_recycleview"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:clipToPadding="false"
+            android:paddingBottom="40dp"
+            app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
 
-        </android.support.design.widget.CoordinatorLayout>
-    </android.support.v4.widget.SwipeRefreshLayout>
+    </android.support.design.widget.CoordinatorLayout>
+    <!--</android.support.v4.widget.SwipeRefreshLayout>-->
 
 
 </RelativeLayout>

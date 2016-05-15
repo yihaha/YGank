@@ -18,6 +18,7 @@ import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
 import com.ybh.lovemeizi.http.ApiServiceFactory;
 import com.ybh.lovemeizi.model.gankio.AllData;
+import com.ybh.lovemeizi.model.gankio.FewDayData;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.utils.PreferenceUtil;
@@ -26,6 +27,12 @@ import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
 import com.ybh.lovemeizi.utils.StatusBarUtil;
 import com.ybh.lovemeizi.utils.ToastSnackUtil;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
+import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -66,7 +73,8 @@ public class MainActivity extends BaseActivity {
     private final static int AVGCOUNT = 10; //每页数据
     private int page = 1;
 
-    private List<GankData> meiziList = new ArrayList<>();
+//    private List<GankData> meiziList = new ArrayList<>();
+    private List<FewDayData.YData> mList=new ArrayList<>();
     private GankRetrofitService gService = ApiServiceFactory.getSingleService();
 
     @Override
@@ -76,22 +84,15 @@ public class MainActivity extends BaseActivity {
 
     @Override
     protected void setStatusBar() {
-        StatusBarUtil.setColorForDrawerLayout(this,(DrawerLayout) findViewById(R.id.drawer_layout),colorPrimary,0);
+        StatusBarUtil.setColorForDrawerLayout(this, (DrawerLayout) findViewById(R.id.drawer_layout), colorPrimary, 0);
     }
 
     @Override
     public void initView() {
-//        setSupportActionBar(toolbar);
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
 
-//        //填充侧边栏头部
-//        mNavigationView.inflateHeaderView(R.layout.main_drawer_header);
-//        //填充侧边栏菜单
-//        mNavigationView.inflateMenu(R.menu.menu_nav);
-
-//        onNavigationViewItemChecked(mNavigationView, mDrawerLayout);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -103,13 +104,13 @@ public class MainActivity extends BaseActivity {
             @Override
             public void onRefreshing() {
                 page = 1;
-                loadData(page);
+                newLoadData(page);
             }
 
             @Override
             public void onLoading() {
                 page++;
-                loadData(page);
+                newLoadData(page);
             }
         });
 
@@ -135,29 +136,29 @@ public class MainActivity extends BaseActivity {
 
     @Override
     public void initData() {
-//        loadData();
     }
 
     /**
-     * 请求数据
+     * 2016/05/15 根据新api写的另一个方法,以前的loadData方法没有这个适合展示首页数据
+     *
+     * @param page
      */
-    private void loadData(final int page) {
-        Subscription subscribe = Observable.zip(gService.getMeiziList(AVGCOUNT, page), gService.getVideoList(AVGCOUNT, page)
-                , new Func2<AllData, AllData, AllData>() {
+    private void newLoadData(final int page) {
+        final Subscription subscribe = gService.getFewDayData(AVGCOUNT,page)
+                .map(new Func1<FewDayData, List<FewDayData.YData>>() {
                     @Override
-                    public AllData call(AllData picAll, AllData videoAll) {
-                        return onMerageDesc(picAll, videoAll);
-                    }
-                })
-                .map(new Func1<AllData, List<GankData>>() {
-                    @Override
-                    public List<GankData> call(AllData allData) {
-                        return allData.results;
+                    public List<FewDayData.YData> call(FewDayData fewDayData) {
+                        List<FewDayData.YData> results = fewDayData.results;
+                        KLog.w(TAG,"数据数量:  "+results.size());
+                        for (FewDayData.YData yData :results) {
+                            parseContent(yData.content, yData);
+                        }
+                        return results;
                     }
                 })
                 .subscribeOn(Schedulers.io())
                 .observeOn(AndroidSchedulers.mainThread())
-                .subscribe(new Observer<List<GankData>>() {
+                .subscribe(new Observer<List<FewDayData.YData>>() {
                     @Override
                     public void onCompleted() {
 
@@ -166,25 +167,71 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onError(Throwable e) {
                         finishReorLoad();
-//                        mRefreshLayout.finishRefreshing();
-                        KLog.w("onError", e + "");
-//                        ToastSnackUtil.snackbarLong(mRefreshLayout, TAG + "异常: " + e.toString());
+                        KLog.w(TAG, e.toString());
                     }
 
                     @Override
-                    public void onNext(List<GankData> gankDatas) {
-                        if (page == 1 && meiziList.size() > 0) { //刷新的时候要将旧数据清空
-                            meiziList.clear();
-                        }
+                    public void onNext(List<FewDayData.YData> yDatas) {
                         finishReorLoad();
-                        meiziList.addAll(gankDatas);
-                        mainRecyclAdapter.setRefresh(meiziList);
-//                        mRefreshLayout.finishRefreshing();
+                        if (page == 1 && mList.size() > 0) { //刷新的时候要将旧数据清空
+                            mList.clear();
+                        }
+                        mList.addAll(yDatas);
+                        mainRecyclAdapter.setRefresh(mList);
+                        KLog.w(TAG, "得到数据");
                     }
                 });
         addSubscription(subscribe);
-
     }
+
+
+    /**
+     * 请求数据
+     */
+//    private void loadData(final int page) {
+//        Subscription subscribe = Observable.zip(gService.getMeiziList(AVGCOUNT, page), gService.getVideoList(AVGCOUNT, page)
+//                , new Func2<AllData, AllData, AllData>() {
+//                    @Override
+//                    public AllData call(AllData picAll, AllData videoAll) {
+//                        return onMerageDesc(picAll, videoAll);
+//                    }
+//                })
+//                .map(new Func1<AllData, List<GankData>>() {
+//                    @Override
+//                    public List<GankData> call(AllData allData) {
+//                        return allData.results;
+//                    }
+//                })
+//                .subscribeOn(Schedulers.io())
+//                .observeOn(AndroidSchedulers.mainThread())
+//                .subscribe(new Observer<List<GankData>>() {
+//                    @Override
+//                    public void onCompleted() {
+//
+//                    }
+//
+//                    @Override
+//                    public void onError(Throwable e) {
+//                        finishReorLoad();
+////                        mRefreshLayout.finishRefreshing();
+//                        KLog.w("onError", e + "");
+////                        ToastSnackUtil.snackbarLong(mRefreshLayout, TAG + "异常: " + e.toString());
+//                    }
+//
+//                    @Override
+//                    public void onNext(List<GankData> gankDatas) {
+//                        if (page == 1 && meiziList.size() > 0) { //刷新的时候要将旧数据清空
+//                            meiziList.clear();
+//                        }
+//                        finishReorLoad();
+//                        meiziList.addAll(gankDatas);
+//                        mainRecyclAdapter.setRefresh(meiziList);
+////                        mRefreshLayout.finishRefreshing();
+//                    }
+//                });
+//        addSubscription(subscribe);
+//
+//    }
 
     /**
      * 为了保持刷新效果小于1秒时,也有1秒的效果
@@ -198,26 +245,26 @@ public class MainActivity extends BaseActivity {
         }, 1000);
     }
 
-    /**
-     * 将视频内容的说明设置到图片说明
-     *
-     * @param picAll
-     * @param videoAll
-     * @return
-     */
-    private AllData onMerageDesc(AllData picAll, AllData videoAll) {
-        int maxLength = picAll.results.size() > videoAll.results.size() ? picAll.results.size() : videoAll.results.size();
-        for (int i = 0; i < maxLength; i++) {
-            GankData picGank = picAll.results.get(i);
-            GankData videoGank = videoAll.results.get(i);
-            //可能发生当前图片和当前视频不是同一天内容,进入当天详情时"描述内容"与首页内容不同,会误认为发生数据请求错误
-            if (DateUtil.onDate2String(picGank.publishedAt, "yyyy/MM/dd")
-                    .equals(DateUtil.onDate2String(videoGank.publishedAt, "yyyy/MM/dd"))) {
-                picGank.desc = videoGank.desc;
-            }
-        }
-        return picAll;
-    }
+//    /**
+//     * 将视频内容的说明设置到图片说明
+//     *
+//     * @param picAll
+//     * @param videoAll
+//     * @return
+//     */
+//    private AllData onMerageDesc(AllData picAll, AllData videoAll) {
+//        int maxLength = picAll.results.size() > videoAll.results.size() ? picAll.results.size() : videoAll.results.size();
+//        for (int i = 0; i < maxLength; i++) {
+//            GankData picGank = picAll.results.get(i);
+//            GankData videoGank = videoAll.results.get(i);
+//            //可能发生当前图片和当前视频不是同一天内容,进入当天详情时"描述内容"与首页内容不同,会误认为发生数据请求错误
+//            if (DateUtil.onDate2String(picGank.publishedAt, "yyyy/MM/dd")
+//                    .equals(DateUtil.onDate2String(videoGank.publishedAt, "yyyy/MM/dd"))) {
+//                picGank.desc = videoGank.desc;
+//            }
+//        }
+//        return picAll;
+//    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -255,7 +302,87 @@ public class MainActivity extends BaseActivity {
     protected void onResume() {
         super.onResume();
 //        mHasDrawLayout=true;
-        defaultCheckedItem=R.id.nav_home;
+        defaultCheckedItem = R.id.nav_home;
         onNavigationViewItemChecked();
     }
+
+
+    /**
+     * 解析数据
+     *
+     * @param content
+     */
+    private void parseContent(String content, FewDayData.YData yData) {
+        Document document = Jsoup.parseBodyFragment(content);
+        Element body = document.body();
+        String spareDesc = ""; //当没有视频信息,是去Android的第一个描述信息
+
+        Elements imgEle = body.getElementsByTag("img");
+        String src = imgEle.attr("src");
+        if (src != null) {
+            yData.imgUrl = src; //图片链接设置
+        }
+
+        List<GankData> gankDatas = new ArrayList<>();
+
+        //获取分类(Ios,Android等)
+        Elements typeList = body.getElementsByTag("h3");
+//        for (Element element : typeList) {
+//            String text = element.text();
+//            KLog.w(TAG, text);
+//        }
+
+        ArrayList<String> typeStringList = new ArrayList<>();
+        /**
+         * <h3>标签和<ul>标签数量可能不同(实测有这种)
+         * */
+        for (int i = 0; i < typeList.size(); i++) {
+            String type = typeList.get(i).text().trim(); //类型
+            if (type==null||type.trim().equals("")){
+                continue;
+            }
+            typeStringList.add(type);
+        }
+
+        for (int i=0;i<typeStringList.size();i++){
+            String type = typeStringList.get(i);
+
+            Element eleUL = body.getElementsByTag("ul").get(i);
+            Elements lis = eleUL.getElementsByTag("li");
+            for (Element element : lis) {
+                Elements elea = element.getElementsByTag("a");
+                String contentUrl =elea.attr("href");  //链接
+                String desc =elea.text(); //描述信息
+                String trim = element.text().trim();
+                String who="";
+                if (trim.contains("(")) { //得到作者
+                    who = trim.substring(trim.lastIndexOf("(")+1,trim.length()-2);
+                }
+                if (type.equals("休息视频")) {
+                    yData.desc = desc;
+                }
+
+                if (type.equalsIgnoreCase("Android")||i==0) {
+                    spareDesc = desc;
+                }
+
+                //设置属性
+                GankData gankData = new GankData();
+                gankData.type = type;
+                gankData.desc = desc;
+                gankData.who=who;
+                gankData.url = contentUrl;
+                gankDatas.add(gankData);
+//                KLog.w(TAG, "desc: " + desc + "  url: " + contentUrl);
+            }
+        }
+
+
+        if (yData.desc == null || yData.desc.trim().equals("")) {
+            yData.desc = spareDesc;
+        }
+        yData.gankDataList = gankDatas;
+
+    }
+
 }

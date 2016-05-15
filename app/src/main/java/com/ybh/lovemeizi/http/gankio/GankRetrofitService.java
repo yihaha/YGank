@@ -1,6 +1,7 @@
 package com.ybh.lovemeizi.http.gankio;
 
 import com.ybh.lovemeizi.model.gankio.AllData;
+import com.ybh.lovemeizi.model.gankio.FewDayData;
 import com.ybh.lovemeizi.model.gankio.TodayDataBean;
 
 import retrofit2.http.GET;
@@ -45,5 +46,9 @@ public interface GankRetrofitService {
     //ios信息列表
     @GET("data/iOS/{pageCount}/{currPage}")
     Observable<AllData> getIosList(@Path("pageCount") int pageCount, @Path("currPage") int currPage);
+
+    //获取指定天数的数据 http://gank.io/api/history/content/2/1
+    @GET("history/content/{pageCount}/{currPage}")
+    Observable<FewDayData> getFewDayData(@Path("pageCount") int pageCount,@Path("currPage") int currPage);
 
 }

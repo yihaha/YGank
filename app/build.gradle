@@ -170,4 +170,5 @@ dependencies {
     compile 'com.umeng.analytics:analytics:latest.integration'
     //圆图
     compile 'de.hdodenhof:circleimageview:2.0.0'
+    compile 'org.jsoup:jsoup:1.9.1'
 }

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
+import com.ybh.lovemeizi.model.gankio.FewDayData;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.home.ui.DetailActivity;
 import com.ybh.lovemeizi.utils.DateUtil;
@@ -31,7 +32,7 @@ import butterknife.ButterKnife;
 public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.MeiziListViewHolder> {
     public Context mContext;
     private LayoutInflater mLayoutInflater;
-    private List<GankData> mList;
+    private List<FewDayData.YData> mList;
     private MainActivity mActivity;
 
     public MainRecyclAdapter(Context context) {
@@ -40,7 +41,7 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
         this.mLayoutInflater = LayoutInflater.from(mContext);
     }
 
-    public void setRefresh(List<GankData> dataList) {
+    public void setRefresh(List<FewDayData.YData> dataList) {
         this.mList = dataList;
         notifyDataSetChanged();
     }
@@ -53,14 +54,13 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
 
     @Override
     public void onBindViewHolder(MeiziListViewHolder holder, int position) {
-        final GankData gankData = mList.get(position);
-        final Date publishedAt = gankData.publishedAt;
-        holder.setView(gankData);
+        final FewDayData.YData yData = mList.get(position);
+        holder.setView(yData);
         holder.descView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mActivity, DetailActivity.class);
-                intent.putExtra(Contant.Y_DATE,publishedAt.getTime()+"");
+                intent.putExtra("ydata", yData);
                 mContext.startActivity(intent);
                 mActivity.overridePendingTransition(R.anim.slide_right_in, R.anim.slide_right_out);
             }
@@ -90,14 +90,14 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
             meizi_img.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    GankData gankData = mList.get(getLayoutPosition());
-                    if (gankData==null){
+                    FewDayData.YData yData = mList.get(getLayoutPosition());
+                    if (yData==null){
                         return;
                     }
                     Intent intent = ShowPicActivity.newIntent(mActivity
-                            , gankData.url
-                            , gankData.type
-                            , DateUtil.onDate2String(gankData.publishedAt, "yyyy/MM/dd"));
+                            , yData.imgUrl
+                            , yData.desc
+                            , DateUtil.onDate2String(yData.publishedAt, "yyyy/MM/dd"));
                     mContext.startActivity(intent);
 
 //                    ActivityOptionsCompat activityOptionsCompat = ActivityOptionsCompat
@@ -110,13 +110,12 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
             });
         }
 
-        public void setView(GankData gankData) {
-            url = gankData.url;
-            meizi_title.setText(gankData.desc);
-//            createTime.setText(DateUtil.onDate2String(gankData.createdAt));//这个创建时间可能不准
-            createTime.setText(DateUtil.onDate2String(gankData.publishedAt));
+        public void setView( FewDayData.YData yData) {
+            url = yData.imgUrl;
+            meizi_title.setText(yData.desc);
+            createTime.setText(DateUtil.onDate2String(yData.publishedAt));
             Glide.with(mContext)
-                    .load(gankData.url)
+                    .load(url)
                     .centerCrop()
                     .placeholder(R.mipmap.defaultmeizi)
                     .dontAnimate()

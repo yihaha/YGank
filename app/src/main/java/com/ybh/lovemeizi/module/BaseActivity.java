@@ -166,7 +166,7 @@ public  class BaseActivity extends AppCompatActivity {
                     case R.id.nav_setting:
                         Toast.makeText(BaseActivity.this, "待开发", Toast.LENGTH_SHORT).show();
 //                        intent=new Intent(YApp.yContext, MainActivity.class);
-//                        mClass = ScrollingActivity.class;
+//                        mClass = TestActivity.class;
                         return false;
 //                        break;
                     case R.id.nav_about:
@@ -199,7 +199,9 @@ public  class BaseActivity extends AppCompatActivity {
             @Override
             public void run() {
                 CircleImageView avaImg = (CircleImageView) BaseActivity.this.findViewById(R.id.drawer_header_img);
-                avaImg.setImageResource(R.mipmap.header);
+                if (avaImg!=null) {
+                    avaImg.setImageResource(R.mipmap.header);
+                }
             }
         });
 
