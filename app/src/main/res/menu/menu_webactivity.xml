@@ -3,14 +3,20 @@
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <item
-        android:id="@+id/web_share"
-        android:orderInCategory="100"
-        android:title="分享"
+        android:id="@+id/web_toweb"
+        android:orderInCategory="98"
+        android:title="网页中打开"
         app:showAsAction="never" />
     <item
         android:id="@+id/web_copy"
         android:orderInCategory="99"
         android:title="复制链接"
+        app:showAsAction="never" />
+
+    <item
+        android:id="@+id/web_share"
+        android:orderInCategory="100"
+        android:title="分享"
         app:showAsAction="never" />
 
 </menu>

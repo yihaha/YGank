@@ -73,8 +73,8 @@ public class MainActivity extends BaseActivity {
     private final static int AVGCOUNT = 10; //每页数据
     private int page = 1;
 
-//    private List<GankData> meiziList = new ArrayList<>();
-    private List<FewDayData.YData> mList=new ArrayList<>();
+    //    private List<GankData> meiziList = new ArrayList<>();
+    private List<FewDayData.YData> mList = new ArrayList<>();
     private GankRetrofitService gService = ApiServiceFactory.getSingleService();
 
     @Override
@@ -144,13 +144,13 @@ public class MainActivity extends BaseActivity {
      * @param page
      */
     private void newLoadData(final int page) {
-        final Subscription subscribe = gService.getFewDayData(AVGCOUNT,page)
+        final Subscription subscribe = gService.getFewDayData(AVGCOUNT, page)
                 .map(new Func1<FewDayData, List<FewDayData.YData>>() {
                     @Override
                     public List<FewDayData.YData> call(FewDayData fewDayData) {
                         List<FewDayData.YData> results = fewDayData.results;
-                        KLog.w(TAG,"数据数量:  "+results.size());
-                        for (FewDayData.YData yData :results) {
+                        KLog.w(TAG, "数据数量:  " + results.size());
+                        for (FewDayData.YData yData : results) {
                             parseContent(yData.content, yData);
                         }
                         return results;
@@ -309,6 +309,7 @@ public class MainActivity extends BaseActivity {
 
     /**
      * 解析数据
+     * 以下内容参考自: http://www.open-open.com/jsoup/
      *
      * @param content
      */
@@ -338,31 +339,35 @@ public class MainActivity extends BaseActivity {
          * */
         for (int i = 0; i < typeList.size(); i++) {
             String type = typeList.get(i).text().trim(); //类型
-            if (type==null||type.trim().equals("")){
+            if (type == null || type.trim().equals("")) {
                 continue;
             }
             typeStringList.add(type);
         }
 
-        for (int i=0;i<typeStringList.size();i++){
-            String type = typeStringList.get(i);
 
+        Elements ulEles = body.getElementsByTag("ul");
+        int size = typeStringList.size() > ulEles.size() ? ulEles.size() : typeStringList.size();
+
+        //实测当天图片,当天视频信息数据没有固定格式;去除最后一个分类,单独进行处理
+        for (int i = 0; i < typeStringList.size() - 1; i++) {
+            String type = typeStringList.get(i);
             Element eleUL = body.getElementsByTag("ul").get(i);
             Elements lis = eleUL.getElementsByTag("li");
             for (Element element : lis) {
                 Elements elea = element.getElementsByTag("a");
-                String contentUrl =elea.attr("href");  //链接
-                String desc =elea.text(); //描述信息
+                String contentUrl = elea.attr("href");  //链接
+                String desc = elea.text(); //描述信息
                 String trim = element.text().trim();
-                String who="";
+                String who = "";
                 if (trim.contains("(")) { //得到作者
-                    who = trim.substring(trim.lastIndexOf("(")+1,trim.length()-2);
+                    who = trim.substring(trim.lastIndexOf("(") + 1, trim.length() - 2);
                 }
                 if (type.equals("休息视频")) {
                     yData.desc = desc;
                 }
 
-                if (type.equalsIgnoreCase("Android")||i==0) {
+                if (type.equalsIgnoreCase("Android") || i == 0) {
                     spareDesc = desc;
                 }
 
@@ -370,13 +375,39 @@ public class MainActivity extends BaseActivity {
                 GankData gankData = new GankData();
                 gankData.type = type;
                 gankData.desc = desc;
-                gankData.who=who;
+                gankData.who = who;
                 gankData.url = contentUrl;
                 gankDatas.add(gankData);
 //                KLog.w(TAG, "desc: " + desc + "  url: " + contentUrl);
             }
         }
 
+        /***获取最后一条数据***/
+        //获取所有带有href属性的a元素
+        Elements selectEles = body.select("a[href]");
+        //取最后一个
+        Element element = selectEles.get(selectEles.size() - 1);
+        //获取作者
+        Element parent = element.parent();
+        String text = parent.text().trim();
+        String who = text.substring(text.lastIndexOf("(") + 1, text.length() - 2);
+        //得到链接
+        String endUrl = element.attr("href");
+
+        String desc = element.text();
+        String type = typeStringList.get(typeStringList.size() - 1);
+        if (type.equals("休息视频")) {
+            yData.desc = desc;
+        }
+
+        GankData gankData = new GankData();
+        gankData.type = type;
+        gankData.desc = desc;
+        gankData.who = who;
+        gankData.url = endUrl;
+        gankDatas.add(gankData);
+
+        /********************/
 
         if (yData.desc == null || yData.desc.trim().equals("")) {
             yData.desc = spareDesc;

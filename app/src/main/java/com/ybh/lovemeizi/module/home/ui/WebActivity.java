@@ -2,6 +2,7 @@ package com.ybh.lovemeizi.module.home.ui;
 
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.view.KeyEvent;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -165,10 +166,26 @@ public class WebActivity extends BaseActivity {
             case R.id.web_copy:
                 copyContent();
                 return true;
+            case R.id.web_toweb:
+                openWebPage();
+                return true;
             default:
                 break;
         }
         return super.onOptionsItemSelected(item);
+    }
+
+    /**
+     * 自带浏览器网页打开
+     */
+    private void openWebPage(){
+//        Intent intent = new Intent();
+//        intent.setAction(Intent.ACTION_VIEW);
+        Uri uri = Uri.parse(mUrl);
+//        intent.setData(uri);
+        Intent intent = new Intent(Intent.ACTION_VIEW, uri);
+        startActivity(intent);
+        
     }
 
     /**
