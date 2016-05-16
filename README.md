@@ -8,7 +8,9 @@
 
 * 这是一个个人练习的app,数据主要来源于 gank.io 主要练习RxJava,Retrofit等的使用.
 
-      *开发过程中也有参考其他的开源项目,感谢他们.*
+      *开发过程中也有参考其他的开源项目,感谢他们.*  
+#### [App 下载](http://fir.im/7vh1)  
+
 >用到的开源库:         
 com.android.support:recyclerview-v7:23.2.1  
  com.android.support:appcompat-v7:23.2.1    
