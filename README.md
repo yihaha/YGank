@@ -10,6 +10,7 @@
 
       *开发过程中也有参考其他的开源项目,感谢他们.*  
 #### [App 下载](http://fir.im/7vh1)  
+#### [数据来源 gank.io](http://gank.io/api)
 
 >用到的开源库:         
 com.android.support:recyclerview-v7:23.2.1  
