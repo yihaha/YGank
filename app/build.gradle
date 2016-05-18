@@ -7,20 +7,16 @@ def packageTime() {
 android {
     compileSdkVersion 23
     buildToolsVersion "23.0.2"
-
     defaultConfig {
         applicationId "com.ybh.lovemeizi"
-        minSdkVersion 19
+        minSdkVersion 14
         targetSdkVersion 23
         versionCode 6
         versionName "2.4"
     }
-
     signingConfigs {
         release {}
     }
-
-
     buildTypes {
 
         debug {
@@ -124,6 +120,8 @@ android {
 
 
     }
+    productFlavors {
+    }
 }
 
 dependencies {
@@ -156,7 +154,7 @@ dependencies {
     //下拉刷新
     //    compile 'in.srain.cube:ultra-ptr:1.0.11'
     //    compile 'com.chanven.lib:cptr:1.0.0'
-//        compile 'com.github.chrisbanes.photoview:library:1.2.3'
+    //        compile 'com.github.chrisbanes.photoview:library:1.2.3'
     //    compile 'com.bm.photoview:library:1.4.0'
     /** ************************************/
     compile 'com.github.zhaokaiqiang.klog:library:1.4.0'

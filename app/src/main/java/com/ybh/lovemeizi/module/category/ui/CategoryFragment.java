@@ -130,7 +130,7 @@ public class CategoryFragment extends BaseFragment {
                         public void onError(Throwable e) {
                             setRefresh(false);
                             yBaseLoadingAdapter.setLoadingComplete();
-                            KLog.w(TAG+"得到数据");
+                            KLog.w(TAG+e.toString());
 //                            ToastSnackUtil.snackbarLong(mSwiRefreshLayout, TAG + "异常: " + e.toString());
                         }
 
