@@ -31,8 +31,8 @@ com.android.support:recyclerview-v7:23.2.1
  com.daimajia.numberprogressbar:library:1.2@aar  
  org.jsoup:jsoup:1.9.1
 
- <img src="/screenshots/1.jpg"/>  <img src="/screenshots/2.jpg"/>  <img src="/screenshots/3.jpg"/>
- <img src="/screenshots/4.jpg"/>  <img src="/screenshots/5.jpg"/>  <img src="/screenshots/6.jpg"/>
+ <img src="/screenshots/1.jpg"width="270" height="486"/>  <img src="/screenshots/2.jpg"width="270" height="486"/>  <img src="/screenshots/3.jpg"width="270" height="486"/>
+ <img src="/screenshots/4.jpg"width="270" height="486"/>  <img src="/screenshots/5.jpg"width="270" height="486"/>  <img src="/screenshots/6.jpg"width="270" height="486"/>
 
 
 
