@@ -2,9 +2,11 @@ package com.ybh.lovemeizi.http;
 
 import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
 import com.ybh.lovemeizi.http.zhihu.KanZhihuApi;
+import com.ybh.lovemeizi.module.home.ui.FileUtil;
 
 import java.util.concurrent.TimeUnit;
 
+import okhttp3.Cache;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
@@ -27,11 +29,17 @@ public class ApiServiceFactory {
      * @return
      */
     private static OkHttpClient getClient() {
+        int cacheSize = 1024 * 1024 * 15; //缓存大小15M
+        Cache cache = new Cache(FileUtil.getCacheFile(), cacheSize);
+
         OkHttpClient okHttpClient
                 = new OkHttpClient.Builder()
                 .retryOnConnectionFailure(true) //出现错误进行重新连接
-                .connectTimeout(15, TimeUnit.SECONDS) //超时时间
+                .connectTimeout(15, TimeUnit.SECONDS) //超时时间15s
+                .cache(cache)
+                .addNetworkInterceptor(new HttpInterceptor())
                 .build();
+
         return okHttpClient;
     }
 

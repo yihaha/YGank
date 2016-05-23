@@ -1,7 +1,5 @@
 package com.ybh.lovemeizi;
 
-import retrofit2.http.PUT;
-
 /**
  * Created by y on 2016/4/21.
  */
@@ -21,6 +19,7 @@ public class Contant {
     public static final  String SHARE_DESC="share_desc";
 
     public static final String ME_URL="https://github.com/yihaha";
+    public static final String CACHE_DIR="ygank";
 
 
 }
