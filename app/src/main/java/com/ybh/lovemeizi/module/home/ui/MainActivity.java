@@ -8,30 +8,24 @@ import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.Menu;
-import android.view.View;
 import android.view.MenuItem;
-
+import android.view.View;
 
 import com.socks.library.KLog;
 import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
-import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
 import com.ybh.lovemeizi.http.ApiServiceFactory;
-import com.ybh.lovemeizi.model.gankio.AllData;
+import com.ybh.lovemeizi.http.gankio.GankRetrofitService;
 import com.ybh.lovemeizi.model.gankio.FewDayData;
 import com.ybh.lovemeizi.model.gankio.GankData;
-import com.ybh.lovemeizi.utils.DateUtil;
-import com.ybh.lovemeizi.utils.PreferenceUtil;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
 import com.ybh.lovemeizi.utils.StatusBarUtil;
-import com.ybh.lovemeizi.utils.ToastSnackUtil;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
-import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import java.util.ArrayList;
@@ -40,12 +34,10 @@ import java.util.List;
 import butterknife.Bind;
 import cn.bmob.v3.Bmob;
 import cn.bmob.v3.update.BmobUpdateAgent;
-import rx.Observable;
 import rx.Observer;
 import rx.Subscription;
 import rx.android.schedulers.AndroidSchedulers;
 import rx.functions.Func1;
-import rx.functions.Func2;
 import rx.schedulers.Schedulers;
 
 public class MainActivity extends BaseActivity {
@@ -318,7 +310,8 @@ public class MainActivity extends BaseActivity {
         Element body = document.body();
         String spareDesc = ""; //当没有视频信息,是去Android的第一个描述信息
 
-        Elements imgEle = body.getElementsByTag("img");
+        Elements imgEles = body.select("img[src]");
+        Element imgEle = imgEles.get(imgEles.size() - 1);
         String src = imgEle.attr("src");
         if (src != null) {
             yData.imgUrl = src; //图片链接设置
