@@ -9,7 +9,6 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.YBaseLoadingAdapter;
@@ -43,7 +42,7 @@ public class MeituAdapter extends YBaseLoadingAdapter<GankData> {
         GankData gankData = mList.get(position);
         Glide.with(meiziHolder.mImg.getContext())
                 .load(gankData.url)
-                .placeholder(R.mipmap.defaultmeizi)
+                .placeholder(R.mipmap.default_ygank)
                 .dontAnimate()
                 .into(meiziHolder.mImg);
         meiziHolder.mImgDate.setText(DateUtil.onDate2String(gankData.publishedAt));

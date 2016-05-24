@@ -10,16 +10,13 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
-import com.ybh.lovemeizi.Contant;
 import com.ybh.lovemeizi.R;
 import com.ybh.lovemeizi.model.gankio.FewDayData;
-import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.home.ui.DetailActivity;
-import com.ybh.lovemeizi.utils.DateUtil;
 import com.ybh.lovemeizi.module.home.ui.MainActivity;
 import com.ybh.lovemeizi.module.home.ui.ShowPicActivity;
+import com.ybh.lovemeizi.utils.DateUtil;
 
-import java.util.Date;
 import java.util.List;
 
 import butterknife.Bind;
@@ -117,7 +114,7 @@ public class MainRecyclAdapter extends RecyclerView.Adapter<MainRecyclAdapter.Me
             Glide.with(mContext)
                     .load(url)
                     .centerCrop()
-                    .placeholder(R.mipmap.defaultmeizi)
+                    .placeholder(R.mipmap.default_ygank)
                     .dontAnimate()
                     .into(meizi_img);
         }

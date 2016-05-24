@@ -310,7 +310,18 @@ public class MainActivity extends BaseActivity {
         Element body = document.body();
         String spareDesc = ""; //当没有视频信息,是去Android的第一个描述信息
 
+        //妹子图片<img 标签目测父标签没有链接存在,应该不会给妹子图弄个超链接(这里已经改了好多次,希望gank.io,不要再增加别的玩法,解析的心好累)
         Elements imgEles = body.select("img[src]");
+        for (int i = 0; i < imgEles.size(); i++) {
+            Element element = imgEles.get(i);
+            Element parent = element.parent();
+            if (parent != null) {
+                String parUrl = parent.attr("href").trim();
+                if (parUrl != null && !parUrl.equals("")) {
+                    imgEles.remove(i);
+                }
+            }
+        }
         Element imgEle = imgEles.get(imgEles.size() - 1);
         String src = imgEle.attr("src");
         if (src != null) {
