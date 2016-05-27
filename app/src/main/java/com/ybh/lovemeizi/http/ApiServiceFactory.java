@@ -29,7 +29,7 @@ public class ApiServiceFactory {
      * @return
      */
     private static OkHttpClient getClient() {
-        int cacheSize = 1024 * 1024 * 15; //缓存大小15M
+        int cacheSize = 1024 * 1024 * 10; //缓存大小10M
         Cache cache = new Cache(FileUtil.getCacheFile(), cacheSize);
 
         OkHttpClient okHttpClient

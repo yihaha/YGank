@@ -68,6 +68,7 @@ public class MainActivity extends BaseActivity {
     //    private List<GankData> meiziList = new ArrayList<>();
     private List<FewDayData.YData> mList = new ArrayList<>();
     private GankRetrofitService gService = ApiServiceFactory.getSingleService();
+    private String[] stringArray;
 
     @Override
     public int getContentViewId() {
@@ -84,6 +85,9 @@ public class MainActivity extends BaseActivity {
         ActionBarDrawerToggle actionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.open, R.string.close);
         actionBarDrawerToggle.syncState();
         mDrawerLayout.addDrawerListener(actionBarDrawerToggle);
+
+        //存储gank.io的类型
+        stringArray = getResources().getStringArray(R.array.typeList);
 
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -343,12 +347,12 @@ public class MainActivity extends BaseActivity {
          * */
         for (int i = 0; i < typeList.size(); i++) {
             String type = typeList.get(i).text().trim(); //类型
-            if (type == null || type.trim().equals("")) {
-                continue;
+            for (int j=0;j<stringArray.length;j++){
+                if (stringArray[j].equals(type)){
+                    typeStringList.add(type);
+                }
             }
-            typeStringList.add(type);
         }
-
 
         Elements ulEles = body.getElementsByTag("ul");
         int size = typeStringList.size() > ulEles.size() ? ulEles.size() : typeStringList.size();
