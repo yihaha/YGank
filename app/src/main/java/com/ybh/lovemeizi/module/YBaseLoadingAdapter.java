@@ -117,7 +117,7 @@ public abstract class YBaseLoadingAdapter<T> extends RecyclerView.Adapter<Recycl
      * 为了移出已经添加到集合为了判断加载布局显示的数据
      */
     public void setLoadingComplete() {
-        mIsLoading=false;
+        mIsLoading = false;
         if (mList != null && mList.size() > 0) {
             mList.remove(mList.size() - 1);
             notifyItemRemoved(mList.size() - 1);

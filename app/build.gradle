@@ -11,8 +11,8 @@ android {
         applicationId "com.ybh.lovemeizi"
         minSdkVersion 14
         targetSdkVersion 23
-        versionCode 9
-        versionName "V2.6"
+        versionCode 13
+        versionName "V2.9.1"
     }
     signingConfigs {
         release {}
@@ -49,7 +49,7 @@ android {
 //                    else {
 //                        fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_bate.apk"
 //                    }
-                    fileName = "YGank_v${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
+                    fileName = "YGank_${defaultConfig.versionName}_${packageTime()}_${variant.productFlavors[0].name}.apk"
                     output.outputFile = new File(outputFile.parent, fileName)
                 }
                 // 删除unaligned apk

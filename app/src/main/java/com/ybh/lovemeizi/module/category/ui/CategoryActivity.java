@@ -69,7 +69,7 @@ public class CategoryActivity extends BaseActivity {
             bundle.putString("flag", titles[i]);
             BaseFragment baseFragment = null;
             if (i == 0) {
-                baseFragment = new ZhihuFragment();
+                baseFragment = new ZhihuFragmentCopy();
             } else {
                 baseFragment = new CategoryFragment();
             }

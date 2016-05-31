@@ -20,6 +20,7 @@ import com.ybh.lovemeizi.model.gankio.FewDayData;
 import com.ybh.lovemeizi.model.gankio.GankData;
 import com.ybh.lovemeizi.module.BaseActivity;
 import com.ybh.lovemeizi.module.home.adapter.MainRecyclAdapter;
+import com.ybh.lovemeizi.utils.ACache;
 import com.ybh.lovemeizi.utils.StatusBarUtil;
 import com.ybh.lovemeizi.widget.yrefreshview.YRefreshLayout;
 
@@ -169,8 +170,18 @@ public class MainActivity extends BaseActivity {
                     @Override
                     public void onNext(List<FewDayData.YData> yDatas) {
                         finishReorLoad();
-                        if (page == 1 && mList.size() > 0) { //刷新的时候要将旧数据清空
-                            mList.clear();
+                        if (page == 1) { //刷新的时候要将旧数据清空
+
+                            if (mList.size() > 0) {
+                                mList.clear();
+                            }
+
+                            ACache aCache = ACache.get(MainActivity.this);
+//                            String s = new Gson().toJson(yDatas);
+                            aCache.put("mainData0", yDatas.get(0), 10 * 60 * 60);
+                            aCache.put("mainData1", yDatas.get(1), 10 * 60 * 60);
+                            aCache.put("mainData2", yDatas.get(2), 10 * 60 * 60);
+                            aCache.put("mainData3", yDatas.get(3), 10 * 60 * 60);
                         }
                         mList.addAll(yDatas);
                         mainRecyclAdapter.setRefresh(mList);
@@ -310,6 +321,9 @@ public class MainActivity extends BaseActivity {
      * @param content
      */
     private void parseContent(String content, FewDayData.YData yData) {
+        if ("".equals(content.trim())) {
+            return;
+        }
         Document document = Jsoup.parseBodyFragment(content);
         Element body = document.body();
         String spareDesc = ""; //当没有视频信息,是去Android的第一个描述信息
@@ -347,8 +361,8 @@ public class MainActivity extends BaseActivity {
          * */
         for (int i = 0; i < typeList.size(); i++) {
             String type = typeList.get(i).text().trim(); //类型
-            for (int j=0;j<stringArray.length;j++){
-                if (stringArray[j].equals(type)){
+            for (int j = 0; j < stringArray.length; j++) {
+                if (stringArray[j].equals(type)) {
                     typeStringList.add(type);
                 }
             }
@@ -421,6 +435,7 @@ public class MainActivity extends BaseActivity {
             yData.desc = spareDesc;
         }
         yData.gankDataList = gankDatas;
+        yData.content = ""; //数据置为""
 
     }
 

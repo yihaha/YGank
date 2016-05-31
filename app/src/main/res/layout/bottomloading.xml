@@ -19,5 +19,4 @@
         android:gravity="center"
         android:text="@string/bottomloading_text"
         android:textSize="@dimen/text_main_size" />
-
 </LinearLayout>
